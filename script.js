@@ -1,12 +1,4 @@
-/* ============================================================
-   JANKALYAN — Main Script
-   Features: API News Feed, Smart Filter, Quote Carousel,
-             Counter Animation, Popup, Navbar Scroll
-   ============================================================ */
 
-// ═══════════════════════════════════════════════════════════════
-// CONFIGURATION & DOM CACHE (CRITICAL - Must be at top!)
-// ═══════════════════════════════════════════════════════════════
 
 /**
  * Global configuration for animations, timings, and thresholds

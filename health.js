@@ -1,31 +1,4 @@
-/* ============================================================
-   HEALTH.JS — Health & Medical Schemes Data
-   स्वास्थ्य और चिकित्सा योजनाओं का डेटा
-   
-   PURPOSE: Store all health-related government schemes
-   मकसद: सभी स्वास्थ्य संबंधित योजनाओं को store करना
-   
-   CATEGORIES:
-   - Health Insurance (स्वास्थ्य बीमा)
-   - Maternal Health (माता और बाल स्वास्थ्य)
-   - Immunization (टीकाकरण)
-   - Mental Health (मानसिक स्वास्थ्य)
-   - Free Treatment (मुफ्त इलाज)
-   
-   EACH SCHEME HAS:
-   - title: Official scheme name
-   - tag: Category/type
-   - description: What the scheme offers
-   - benefit: Health coverage or benefits
-   - ministry: Government ministry in charge
-   - eligibility: Who can avail this scheme
-   - income: Income criteria (if any)
-   - documents: Papers needed to apply
-   - howToApply: Application process
-   - applyLink: Official website
-   ============================================================ */
 
-// सभी स्वास्थ्य योजनाएं इस array में हैं
 let healthSchemes = [
   {
     title: "Ayushman Bharat – Pradhan Mantri Jan Arogya Yojana (PMJAY)",

@@ -1,37 +1,21 @@
-<!--
-  ╔══════════════════════════════════════════════════════════════════════╗
-  ║  STUDENT SCHEMES PAGE / छात्र योजनाएं पृष्ठ                           ║
-  ║  PURPOSE: Display all education and scholarship schemes             ║
-  ║  मकसद: सभी शिक्षा और छात्रवृत्ति योजनाओं को दिखाना                ║
-  ║                                                                      ║
-  ║  CONTENT:                                                            ║
-  ║  - Navigation bar (top menu)                                         ║
-  ║  - Page hero section (big title with category badge)                 ║
-  ║  - Schemes grid (list of all schemes from student.js)                ║
-  ║  - Footer (links और contact info)                                   ║
-  ║                                                                      ║
-  ║  DATA SOURCE: student.js (JavaScript array में schemes हैं)         ║
-  ║  HOW IT WORKS: JS file से schemes निकाल कर cards में दिखाते हैं      ║
-  ╚══════════════════════════════════════════════════════════════════════╝
--->
+
 
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <!-- Meta tags - page information -->
+  
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Student Welfare Schemes - JanKalyan</title>
   <link rel="icon" type="image/x-icon" href="favicon.ico">
-  <!-- Link करता है style.css से - सभी styling यहाँ से आती है -->
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
 
-  <!-- Tricolor bar - भारतीय flag का तिरंगा -->
+  <!-- Tricolor bar  -->
   <div class="tricolor-bar"></div>
 
-  <!-- Navigation bar - top menu for navigation -->
+  <!-- Navigation bar  -->
   <nav class="navbar">
     <a href="index.html" class="nav-brand">
       <div class="nav-emblem">🏛️</div>
@@ -53,7 +37,7 @@
     </ul>
   </nav>
 
-  <!-- Page Hero Section - बड़ा title वाला section -->
+  <!-- Page Hero Section -  -->
   <section class="page-hero">
     <div class="page-hero-content">
       <div class="hero-badge">Category: Education</div>
@@ -64,14 +48,12 @@
     </div>
   </section>
 
-  <!-- Schemes Display Section - यहाँ सभी schemes दिखते हैं -->
+  <!-- Schemes Display Section  -->
   <section class="schemes-section">
     <span class="section-label">Government Schemes</span>
     <h2 class="section-title">Available Student Schemes</h2>
     <p class="section-sub">Browse all central and state government schemes designed to support students at every stage of education.</p>
 
-    <!-- This div gets filled by JavaScript from student.js -->
-    <!-- JavaScript इस div में scheme cards डालता है -->
     <div class="schemes-grid" id="schemesGrid">
       <p style="color:var(--mid-gray);font-size:0.9rem;">Loading schemes...</p>
     </div>

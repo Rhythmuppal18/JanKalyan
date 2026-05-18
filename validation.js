@@ -1,54 +1,22 @@
-/* ============================================================
-   JANKALYAN — Form Validation Utility / फॉर्म वेरिफाई करने के लिए
-   
-   PURPOSE: Validate user input before submitting forms
-   मकसद: जब user कोई form भरे, उसे verify करना
-   
-   VALIDATION RULES:
-   - Email format validation
-   - Indian phone number (10 digits, starts with 6-9)
-   - PAN format (India's tax ID)
-   - Aadhaar number (12 digits)
-   - Name validation (no numbers)
-   - PIN code (6 digits)
-   - Income, age, amount checks
-   - Date format validation
-   
-   USAGE: Validators.email(value), Validators.phone(value), etc.
-   ============================================================ */
 
-// ── FORM VALIDATORS OBJECT ───────────────────────────────────
-// यह एक object है जिसमें सभी validation functions हैं
-// हर function एक rule को check करता है
 
 const Validators = {
-  // EMAIL VALIDATION
-  // Email की format को check करता है (abc@xyz.com जैसा होना चाहिए)
   email: (value) => {
     const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return regex.test(value);
   },
 
-  // PHONE VALIDATION - Indian format
-  // भारतीय mobile number को verify करता है
-  // Rules:
-  // 1. Exactly 10 digits
-  // 2. पहली digit 6-9 के बीच होनी चाहिए (क्योंकि Indian numbers ऐसे start होते हैं)
   phone: (value) => {
-    // पहले spaces और dashes को remove करो
     const cleaned = value.replace(/[\s\-()]/g, '');
     
-    // Check करो कि exactly 10 digits हैं या नहीं
     if (cleaned.length !== 10) {
       return false;
     }
     
-    // Check करो कि सभी characters digits हैं
     if (!/^\d+$/.test(cleaned)) {
       return false;
     }
     
-    // पहली digit 6, 7, 8, या 9 होनी चाहिए
     const firstDigit = parseInt(cleaned[0]);
     if (firstDigit < 6 || firstDigit > 9) {
       return false;
@@ -57,56 +25,46 @@ const Validators = {
     return true;
   },
 
-  // PAN VALIDATION - Permanent Account Number (India)
-  // Format: AAAAA0000A (5 letters, 4 numbers, 1 letter)
   pan: (value) => {
     const regex = /^[A-Z]{5}[0-9]{4}[A-Z]{1}$/;
     return regex.test(value.toUpperCase());
   },
 
-  // AADHAAR VALIDATION - Unique Identity Number (12 digits)
-  // Aadhaar एक 12-digit unique ID है जो सभी Indians को दिया जाता है
   aadhaar: (value) => {
     const regex = /^\d{12}$/;
     return regex.test(value.replace(/[\s\-]/g, ''));
   },
 
-  // NAME VALIDATION
-  // नाम में कम से कम 3 characters होने चाहिए और कोई numbers नहीं
+
   name: (value) => {
     const regex = /^[a-zA-Z\s]{3,}$/;
     return regex.test(value.trim());
   },
 
-  // PIN CODE VALIDATION - 6 digits
-  // Postal Index Number - भारत के हर शहर को एक unique code दिया जाता है
+
   pincode: (value) => {
     const regex = /^\d{6}$/;
     return regex.test(value);
   },
 
-  // INCOME VALIDATION
-  // Income positive number होनी चाहिए
+
   income: (value) => {
     return /^\d+$/.test(value) && parseInt(value) > 0;
   },
 
-  // AGE VALIDATION
-  // Age 18 से 120 के बीच होनी चाहिए
   age: (value) => {
     const age = parseInt(value);
     return age >= 18 && age <= 120;
   },
 
-  // AMOUNT VALIDATION - Donation के लिए
-  // Minimum ₹100 donate करना जरूरी है
+
   amount: (value) => {
     const amount = parseInt(value);
     return amount >= 100;
   },
 
-  // DATE VALIDATION - YYYY-MM-DD format में
-  // Format को check करो और फिर valid date है या नहीं भी check करो
+  // DATE VALIDATION - YYYY-MM-DD 
+
   date: (value) => {
     const regex = /^\d{4}-\d{2}-\d{2}$/;
     if (!regex.test(value)) return false;
@@ -115,19 +73,17 @@ const Validators = {
   },
 
   // REQUIRED FIELD VALIDATION
-  // Field को खाली नहीं छोड़ा जा सकता
   required: (value) => {
     return value && value.toString().trim().length > 0;
   },
 
   // MINIMUM LENGTH CHECK
-  // Value में कम से कम X characters होने चाहिए
   minLength: (value, length) => {
     return value.toString().trim().length >= length;
   },
 
   // MAXIMUM LENGTH CHECK
-  // Value में ज्यादा से ज्यादा X characters हो सकते हैं
+
   maxLength: (value, length) => {
     return value.toString().trim().length <= length;
   }

@@ -1,40 +1,4 @@
-/* ============================================================
-   SERVICE.JS — Essential Services & Employment Schemes Data
-   आवश्यक सेवाएं और रोजगार योजनाओं का डेटा
-   
-   PURPOSE: Store all essential services schemes
-   मकसद: सभी आवश्यक सेवा योजनाओं को store करना
-   
-   CATEGORIES:
-   - Employment & Income (रोजगार और आय)
-   - Food Security (खाद्य सुरक्षा)
-   - Clean Cooking (स्वच्छ खाना पकाने)
-   - Electricity (बिजली)
-   - Water & Sanitation (पानी और स्वच्छता)
-   - Social Security (सामाजिक सुरक्षा)
-   - Agriculture Support (कृषि सहायता)
-   
-   EACH SCHEME HAS:
-   - title: Official scheme name
-   - tag: Category/type
-   - description: What the scheme provides
-   - benefit: Benefits or amount given
-   - ministry: Government ministry running it
-   - eligibility: Who can apply
-   - income: Income limit (if applicable)
-   - documents: Required documents
-   - howToApply: Application process
-   - applyLink: Official website
-   
-   THESE SCHEMES HELP WITH:
-   - Employment opportunities (काम की सुविधा)
-   - Free utilities (मुफ्त सुविधाएं)
-   - Income support (आय सहायता)
-   - Food subsidies (खाद्य सब्सिडी)
-   - Pension benefits (पेंशन)
-   ============================================================ */
 
-// सभी सेवा योजनाएं इस array में हैं
 let serviceSchemes = [
   {
     title: "Mahatma Gandhi NREGA (MGNREGS)",

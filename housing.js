@@ -1,37 +1,4 @@
-/* ============================================================
-   HOUSING.JS — Housing & Shelter Schemes Data
-   आवास और आश्रय योजनाओं का डेटा
-   
-   PURPOSE: Store all housing-related government schemes
-   मकसद: सभी आवास संबंधित योजनाओं को store करना
-   
-   CATEGORIES:
-   - Rural Housing (ग्रामीण आवास)
-   - Urban Housing (शहरी आवास)
-   - Slum Rehabilitation (झुग्गी पुनर्वास)
-   - Home Loans & Subsidies (गृह ऋण और सब्सिडी)
-   - Street Vendor Support (रेहड़ी विक्रेता सहायता)
-   
-   EACH SCHEME HAS:
-   - title: Official scheme name
-   - tag: Category/type
-   - description: What the scheme provides
-   - benefit: Financial assistance or grant amount
-   - ministry: Government ministry managing it
-   - eligibility: Criteria to qualify
-   - income: Maximum income limit
-   - documents: Required documents
-   - howToApply: How to apply for the scheme
-   - applyLink: Official website link
-   
-   TARGET BENEFICIARIES:
-   - BPL families (गरीब परिवार)
-   - First-time homebuyers (पहली बार घर लेने वाले)
-   - Urban poor & slum dwellers (शहरी गरीब)
-   - Homeless persons (बेघर व्यक्ति)
-   ============================================================ */
 
-// सभी आवास योजनाएं इस array में हैं
 let housingSchemes = [
   {
     title: "Pradhan Mantri Awas Yojana – Gramin (PMAY-G)",

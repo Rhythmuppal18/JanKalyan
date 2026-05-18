@@ -1,31 +1,4 @@
-/* ============================================================
-   STUDENT.JS — Student Welfare & Education Schemes Data
-   विद्यार्थी कल्याण और शिक्षा योजनाओं का डेटा
-   
-   PURPOSE: Store all student-related government schemes
-   मकसद: सभी छात्र-संबंधित योजनाओं को store करना
-   
-   CATEGORIES:
-   - Scholarships (छात्रवृत्ति)
-   - Fellowships (फेलोशिप)
-   - Education Loans (शिक्षा लोन)
-   - Skill Development (कौशल विकास)
-   - Research Support (अनुसंधान सहायता)
-   
-   EACH SCHEME HAS:
-   - title: Official name of scheme (योजना का नाम)
-   - tag: Category/type (श्रेणी)
-   - description: What it offers (क्या दिया जाता है)
-   - benefit: Amount/benefit (लाभ की राशि)
-   - ministry: Which ministry runs it (कौन सी मंत्रालय चलाती है)
-   - eligibility: Who can apply (कौन आवेदन कर सकता है)
-   - income: Income limit (आय की सीमा)
-   - documents: Required papers (जरूरी दस्तावेज)
-   - howToApply: Steps to apply (आवेदन कैसे करें)
-   - applyLink: Official website link (आधिकारिक वेबसाइट)
-   ============================================================ */
-
-// सभी छात्र योजनाएं इस array में store हैं
+// Student array structure
 let studentSchemes = [
   {
     title: "PM Scholarship Scheme (PMSS)",

@@ -1,106 +1,84 @@
-/* ============================================================
-   JANKALYAN — CSS Styling / डिजाइन की फाइल
-   
-   PURPOSE: Style all HTML elements with modern design
-   मकसद: सभी elements को सुंदर बनाना
-   
-   DESIGN SYSTEM:
-   - Colors: Navy (dark blue), emerald (green), saffron (orange)
-   - Fonts: Fraunces (headings), DM Sans (body text)
-   - Layout: Responsive (works on mobile, tablet, desktop)
-   - Style: Premium, trust-based, professional
-   
-   SECTIONS:
-   1. CSS Variables (colors, shadows, spacing)
-   2. Base styles (reset, body, links)
-   3. Navbar (navigation bar)
-   4. Hero section (main banner)
-   5. Cards & components
-   6. Responsive design
-   
-   NOTE: Mobile-first approach - फिर बड़े screens के लिए
-   ============================================================ */
+
 
 @import url('https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,300;0,600;0,700;0,900;1,300;1,700&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&display=swap');
 
-/* ── CSS VARIABLES / रंग और डिजाइन settings ── */
-/* ये variables सारे page में reusable हैं */
+/* ── CSS VARIABLES */
 :root {
-  /* PRIMARY COLORS - मुख्य रंग */
-  --navy:        #0F1F3D;      /* गहरा नीला - main text color */
-  --navy-mid:    #1A3260;      /* थोड़ा हल्का नीला */
-  --slate:       #2E4170;      /* स्लेट - secondary */
-  --emerald:     #0D7A5F;      /* हरा - accent color */
-  --emerald-lt:  #11A67A;      /* हल्का हरा */
-  --saffron:     #E8730A;      /* भारतीय तिरंगे का नारंगी */
-  --saffron-lt:  #FF9933;      /* हल्का नारंगी */
-  --cream:       #F8F5F0;      /* क्रीम - light background */
-  --off-white:   #FDFCFA;      /* बहुत हल्का - page background */
-  --mid-gray:    #6B7A99;      /* मध्यम ग्रे - secondary text */
-  --light-gray:  #EEF1F7;      /* हल्का ग्रे - borders */
-  --border:      #E2E8F0;      /* बॉर्डर का रंग */
-  --white:       #FFFFFF;      /* सफेद */
-  --green:       #138808;      /* तिरंगे का हरा */
-  --dark:        #0A0F1E;      /* बहुत गहरा - almost black */
+  
+  --navy:        #0F1F3D;      
+  --navy-mid:    #1A3260;      
+  --slate:       #2E4170;     
+  --emerald:     #0D7A5F;      
+  --emerald-lt:  #11A67A;  
+  --saffron:     #E8730A;     
+  --saffron-lt:  #FF9933;    
+  --cream:       #F8F5F0;      
+  --off-white:   #FDFCFA;     
+  --mid-gray:    #6B7A99;      
+  --light-gray:  #EEF1F7;  
+  --border:      #E2E8F0;     
+  --white:       #FFFFFF;      
+  --green:       #138808;      
+  --dark:        #0A0F1E;      
 
-  /* SHADOWS - हल्की-भारी छायाएं */
+  /* SHADOWS  */
   --shadow-sm:   0 2px 8px rgba(15,31,61,0.08);
   --shadow-md:   0 8px 24px rgba(15,31,61,0.12);
   --shadow-lg:   0 20px 48px rgba(15,31,61,0.16);
   --shadow-xl:   0 32px 64px rgba(15,31,61,0.20);
 
-  /* SPACING - कोने की radius (roundness) */
+  /* SPACING */
   --radius-sm:   8px;
   --radius:      14px;
   --radius-lg:   20px;
   --radius-xl:   28px;
 
-  /* FONTS - टाइपफेस */
+  /* FONTS */
   --font-display: 'Fraunces', Georgia, serif;    /* बड़े headings के लिए */
   --font-body:    'DM Sans', system-ui, sans-serif; /* सामान्य text के लिए */
 
-  /* ANIMATIONS - एनिमेशन की गति */
+  /* ANIMATIONS  */
   --ease:        cubic-bezier(0.4, 0, 0.2, 1);
   --ease-out:    cubic-bezier(0, 0, 0.2, 1);
   --transition:  0.3s var(--ease);
 }
 
 /* ── RESET & BASE STYLES ── */
-/* सभी elements को एक जैसे शुरुआत से start करना */
+
 *, *::before, *::after { 
-  box-sizing: border-box;  /* सभी को equal measurement दो */
+  box-sizing: border-box;  
   margin: 0; 
   padding: 0; 
 }
 html { 
-  scroll-behavior: smooth;  /* जब link पर click करो तो smooth scroll */
+  scroll-behavior: smooth;  
   font-size: 18px; 
 }
 body {
   font-family: var(--font-body);
   font-size: 1rem;
-  line-height: 1.65;  /* lines के बीच space */
+  line-height: 1.65;  
   color: var(--navy);
   background: var(--off-white);
-  overflow-x: hidden;  /* horizontal scroll को block करो */
+  overflow-x: hidden;  
 }
-a { text-decoration: none; color: inherit; }  /* links में underline न हो */
-img { max-width: 100%; display: block; object-fit: cover; }  /* responsive images */
-ul { list-style: none; }  /* bullets remove करो */
+a { text-decoration: none; color: inherit; } 
+img { max-width: 100%; display: block; object-fit: cover; }  
+ul { list-style: none; }  
 button { cursor: pointer; border: none; background: none; font-family: inherit; }
 
 /* ── TRICOLOR BAR ── */
-/* भारतीय राष्ट्र ध्वज का तिरंगा (top में दिखता है) */
+
 .tricolor-bar {
   height: 4px;
   background: linear-gradient(to right,
-    var(--saffron-lt) 0% 33.3%,  /* नारंगी */
-    var(--white) 33.3% 66.6%,    /* सफेद */
-    var(--green) 66.6% 100%);    /* हरा */
+    var(--saffron-lt) 0% 33.3%,  
+    var(--white) 33.3% 66.6%,    
+    var(--green) 66.6% 100%);    
 }
 
-/* ── NAVBAR (Navigation Bar) / Navigation करने के लिए ── */
-/* यह sticky navbar है जो हमेशा दिखता है */
+/* ── NAVBAR */
+
 .navbar {
   position: sticky;
   top: 0;
@@ -117,7 +95,6 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
   transition: background var(--transition);
 }
 .navbar.scrolled {
-  /* जब page scroll हो तो navbar और गहरा हो जाए */
   background: rgba(10, 15, 30, 0.96);
   box-shadow: var(--shadow-md);
 }
