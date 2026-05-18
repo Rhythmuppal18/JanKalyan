@@ -1,0 +1,127 @@
+<!--
+  ╔══════════════════════════════════════════════════════════════════════╗
+  ║  ABOUT PAGE / परियोजना के बारे में                                   ║
+  ║  PURPOSE: Explain JANKALYAN's mission and vision                    ║
+  ║  मकसद: JANKALYAN के उद्देश्य और दृष्टिकोण को समझाना              ║
+  ║                                                                      ║
+  ║  SECTIONS:                                                           ║
+  ║  - Mission (हमारा मकसद)                                              ║
+  ║  - Vision (हमारा सपना)                                               ║
+  ║  - Why we built this (क्यों हमने ये बनाया)                           ║
+  ║  - How it works (कैसे काम करता है)                                   ║
+  ║  - Our approach (हमारा तरीका)                                        ║
+  ║                                                                      ║
+  ║  KEY MESSAGE: "Awareness is the first step toward empowerment"      ║
+  ║  मुख्य संदेश: "जागरूकता ही सशक्तिकरण की पहली सीढ़ी है"             ║
+  ╚══════════════════════════════════════════════════════════════════════╝
+-->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>About –  JANKALYAN</title>
+  <link rel="icon" type="image/x-icon" href="favicon.ico">
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <!-- Tricolor flag -->
+  <div class="tricolor-bar"></div>
+  
+  <!-- Navigation menu -->
+  <nav class="navbar">
+    <a href="index.html" class="nav-brand">
+      <div class="nav-emblem">🏛️</div>
+      <div class="nav-title"> JANKALYAN<span>Transforming Awareness into Access.</span></div>
+    </a>
+    <!-- Hamburger menu for mobile -->
+    <div class="hamburger" onclick="toggleMenu()"><span></span><span></span><span></span></div>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="about.html" class="active">About</a></li>
+      <li><a href="eligibility.html">Eligibility</a></li>
+      <li><a href="schemes-by-state.html">State Schemes</a></li>
+      <li><a href="login.html">Login</a></li>
+      <li><a href="donate.html" class="btn-nav">Donate</a></li>
+    </ul>
+  </nav>
+
+  <!-- Hero section -->
+  <section class="page-hero">
+    <div class="page-hero-content">
+      <div class="hero-badge">About the Portal</div>
+      <h1>Who We Are</h1>
+      <p>A centralised digital platform bridging citizens and government welfare schemes across India.</p>
+    </div>
+  </section>
+
+  <!-- Main content area -->
+  <div class="about-content">
+    <div class="about-grid">
+      <div class="about-img-placeholder"></div>
+      <!-- About text section with mission info -->
+      <div class="about-text">
+        <span class="section-label">Our Mission</span>
+        <h2>Empowering Citizens Through Information</h2>
+        <p>
+            JanKalyan is a digital initiative dedicated to bridging the information gap between public welfare programs and the citizens who need them most. We believe that awareness is the first step toward empowerment. Our platform serves as a structured, reliable, and easy-to-use resource designed to bring essential government schemes in housing, healthcare, education, and financial assistance directly to the fingertips of the underserved.</p>
+        
+        <p>
+          JanKalyan is built on a foundation of transparency, inclusivity, and social responsibility. While our current platform focuses on intuitive front-end delivery, we are committed to evolving
+      
+        </p>
+        <h6> At JanKalyan, we leverage technology not just for innovation, but for impact.</h6>
+  
+      </div>
+    </div>
+
+    <div style="margin-top:3rem;">
+      <span class="section-label">What We Do</span>
+      <h2 class="section-title">Our Core Functions</h2>
+    </div>
+
+    <div class="mission-cards">
+      <div class="mission-card">
+        <div class="mission-icon">📋</div>
+        <h4>Scheme Directory</h4>
+        <p>A comprehensive, up-to-date database of 480+ welfare schemes from all ministries.</p>
+      </div>
+      <div class="mission-card">
+        <div class="mission-icon">✅</div>
+        <h4>Eligibility Check</h4>
+        <p>Simple eligibility criteria for each scheme to help citizens identify applicable benefits.</p>
+      </div>
+      <div class="mission-card">
+        <div class="mission-icon">💰</div>
+        <h4>Donation Support</h4>
+        <p>Enabling citizens to contribute to welfare funds supporting underprivileged communities.</p>
+      </div>
+    </div>
+  </div>
+
+  <footer class="footer">
+    <div class="footer-inner">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <div class="nav-brand"><div class="nav-emblem">🏛️</div><div class="nav-title" style="color:white;"> JANKALYAN<span>Transforming Awareness into Access.</span></div></div>
+          <p>Empowering every citizen through access to information and government welfare schemes.</p>
+        </div>
+        <div class="footer-col"><h4>Schemes</h4><a href="student.html">Student</a><a href="health.html">Health</a><a href="housing.html">Housing</a><a href="service.html">Services</a></div>
+        <div class="footer-col"><h4>Portal</h4><a href="about.html">About</a><a href="eligibility.html">Eligibility</a><a href="donate.html">Donate</a></div>
+        <div class="footer-col"><h4>Help</h4><a href="#">FAQ</a><a href="#">Contact</a><a href="#">Grievance</a></div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2025 JanKalyan, India. All rights reserved.</p>
+        <div class="footer-flag">
+          <div class="flag-stripe" style="background:var(--saffron);border-radius:2px 0 0 2px;"></div>
+          <div class="flag-stripe" style="background:var(--white);"></div>
+          <div class="flag-stripe" style="background:var(--green);border-radius:0 2px 2px 0;"></div>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script>function toggleMenu(){document.getElementById('navLinks').classList.toggle('open');}</script>
+</body>
+</html>

@@ -1,0 +1,926 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>State Schemes — JANKALYAN</title>
+  <link rel="icon" type="image/x-icon" href="favicon.ico">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,700;0,900;1,300&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    :root {
+      --navy: #001f3f;
+      --blue: #0d47a1;
+      --saffron: #FF9933;
+      --green: #138808;
+      --emerald: #059669;
+      --bg: #f4f7fb;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--bg);
+      color: #1a2332;
+    }
+
+    /* ─── NAVBAR ─── */
+    .navbar {
+      position: sticky; top: 0; z-index: 100;
+      background: rgba(0,31,63,0.97);
+      backdrop-filter: blur(12px);
+      padding: 0 2rem;
+      display: flex; align-items: center; justify-content: space-between;
+      border-bottom: 3px solid var(--saffron);
+    }
+    .nav-brand {
+      display: flex; align-items: center; gap: 0.75rem;
+      text-decoration: none; padding: 1rem 0;
+    }
+    .nav-emblem {
+      width: 36px; height: 36px; background: var(--saffron);
+      border-radius: 8px; display: grid; place-items: center;
+    }
+    .nav-title { color: white; font-weight: 700; font-size: 1rem; line-height: 1.1; }
+    .nav-title span { display: block; font-size: 0.65rem; font-weight: 300; opacity: 0.7; }
+    .nav-links { display: flex; gap: 0.25rem; list-style: none; }
+    .nav-links a {
+      color: rgba(255,255,255,0.75); font-size: 0.82rem; font-weight: 500;
+      padding: 0.5rem 0.75rem; border-radius: 6px; text-decoration: none;
+      transition: all 0.2s;
+    }
+    .nav-links a:hover, .nav-links a.active { color: white; background: rgba(255,255,255,0.1); }
+    .nav-links .btn-nav {
+      background: var(--saffron); color: var(--navy) !important; font-weight: 600;
+    }
+
+    /* ─── PAGE HERO ─── */
+    .page-hero {
+      background: linear-gradient(135deg, var(--navy) 0%, #0d47a1 60%, #1565c0 100%);
+      padding: 3rem 2rem;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .page-hero::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+    }
+    .page-hero-badge {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      background: rgba(255,153,51,0.15); border: 1px solid rgba(255,153,51,0.4);
+      color: var(--saffron); font-size: 0.8rem; font-weight: 600;
+      padding: 0.35rem 1rem; border-radius: 100px; margin-bottom: 1.25rem;
+      letter-spacing: 0.05em;
+    }
+    .page-hero h1 {
+      font-family: 'Fraunces', serif;
+      font-size: clamp(1.8rem, 4vw, 2.8rem);
+      color: white; font-weight: 900;
+      line-height: 1.15; margin-bottom: 0.75rem;
+    }
+    .page-hero h1 em { color: var(--saffron); font-style: italic; }
+    .page-hero p {
+      color: rgba(255,255,255,0.7); font-size: 1rem;
+      max-width: 500px; margin: 0 auto;
+    }
+
+    /* ─── MAIN LAYOUT ─── */
+    .main-wrap {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 2.5rem 1.5rem;
+    }
+
+    /* ─── MAP + PANEL SPLIT ─── */
+    .map-panel-split {
+      display: grid;
+      grid-template-columns: 1fr 420px;
+      gap: 2rem;
+      align-items: start;
+    }
+
+    @media (max-width: 1024px) {
+      .map-panel-split { grid-template-columns: 1fr; }
+    }
+
+    /* ─── MAP CARD ─── */
+    .map-card {
+      background: white;
+      border-radius: 1.5rem;
+      box-shadow: 0 8px 32px rgba(0,31,63,0.08);
+      overflow: hidden;
+    }
+
+    .map-card-header {
+      background: linear-gradient(135deg, var(--navy), var(--blue));
+      padding: 1.5rem 2rem;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .map-card-header h2 {
+      font-family: 'Fraunces', serif;
+      color: white; font-size: 1.4rem; font-weight: 700;
+    }
+    .map-card-header p { color: rgba(255,255,255,0.7); font-size: 0.85rem; margin-top: 0.25rem; }
+
+    /* Category filter pills */
+    .filter-bar {
+      display: flex; gap: 0.5rem; flex-wrap: wrap;
+      padding: 1.25rem 1.5rem;
+      background: #f8fafb;
+      border-bottom: 1px solid #e8edf3;
+    }
+    .filter-btn {
+      padding: 0.4rem 1rem; border: 2px solid #dde3ed;
+      background: white; border-radius: 100px;
+      font-size: 0.82rem; font-weight: 600; cursor: pointer;
+      transition: all 0.2s; color: #4a5568;
+    }
+    .filter-btn:hover { 
+      border-color: var(--blue); 
+      color: var(--blue); }
+    .filter-btn.active {
+      background: var(--saffron); border-color: var(--saffron);
+      color: white; box-shadow: 0 4px 12px rgba(255,153,51,0.3);
+    }
+
+    /* ─── SVG MAP ─── */
+    .map-svg-wrap {
+      position: relative;
+      background: linear-gradient(160deg, #e8f0fe 0%, #f0f9ff 100%);
+      padding: 1rem;
+    }
+    .map-svg-wrap svg {
+      width: 100%; height: auto;
+      display: block;
+    }
+    .state-path {
+      fill: #5b8dee;
+      stroke: white;
+      stroke-width: 1.2;
+      cursor: pointer;
+      transition: fill 0.2s, filter 0.2s;
+    }
+    .state-path:hover {
+      fill: #1a56db;
+      filter: drop-shadow(0 3px 8px rgba(26,86,219,0.4));
+    }
+    .state-path.selected {
+      fill: var(--saffron);
+      filter: drop-shadow(0 3px 10px rgba(255,153,51,0.5));
+    }
+    .state-path.dim { fill: #c8d8f8; }
+
+    .map-hint {
+      padding: 0.85rem 1.5rem;
+      background: #ecfdf5;
+      border-top: 1px solid #a7f3d0;
+      font-size: 0.85rem;
+      color: #065f46;
+      display: flex; align-items: center; gap: 0.5rem;
+    }
+
+    /* ─── STATE GRID (fallback / scroll) ─── */
+    .state-grid-toggle {
+      padding: 1rem 1.5rem 0;
+      display: flex; align-items: center; gap: 0.75rem;
+    }
+    .toggle-label { font-size: 0.82rem; color: #64748b; font-weight: 500; }
+    .toggle-btn {
+      padding: 0.3rem 0.75rem; font-size: 0.78rem;
+      border: 1px solid #dde3ed; background: white;
+      border-radius: 6px; cursor: pointer; transition: all 0.2s;
+    }
+    .toggle-btn.active { 
+      background: var(--navy); 
+      color: white; 
+      border-color: var(--navy); }
+
+    #stateButtonsWrap {
+      padding: 1rem 1.5rem 1.5rem;
+      display: none;
+    }
+    #stateButtonsWrap.open { display: block; }
+    .state-btn-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(82px, 1fr));
+      gap: 0.6rem;
+    }
+    .state-btn {
+      display: flex; flex-direction: column; align-items: center;
+      padding: 0.6rem 0.25rem;
+      border: 2px solid #e2e8f0; border-radius: 10px;
+      background: #f8fafc; cursor: pointer;
+      font-size: 0.68rem; font-weight: 600; color: #334155;
+      line-height: 1.3; text-align: center;
+      transition: all 0.2s;
+    }
+    .state-btn:hover { 
+      border-color: var(--blue); 
+      background: #eff6ff; 
+      color: var(--blue); }
+    .state-btn.selected { 
+      border-color: var(--saffron); 
+      background: #fff7ed; 
+      color: #9a3412; }
+    .state-btn span:first-child { 
+      font-size: 1.5rem; 
+      margin-bottom: 0.25rem; }
+
+    /* ─── STATE INFO PANEL ─── */
+    .state-info-panel {
+      background: white;
+      border-radius: 1.5rem;
+      box-shadow: 0 8px 32px rgba(0,31,63,0.08);
+      overflow: hidden;
+      position: sticky;
+      top: 80px;
+      opacity: 0;
+      transform: translateX(20px);
+      pointer-events: none;
+      transition: opacity 0.3s ease, transform 0.3s ease;
+    }
+    .state-info-panel.active {
+      opacity: 1; transform: translateX(0);
+      pointer-events: all;
+    }
+
+    .panel-header {
+      background: linear-gradient(135deg, var(--navy), var(--blue));
+      padding: 1.75rem;
+      position: relative;
+    }
+    .panel-state-emoji { 
+      font-size: 2.5rem; 
+      margin-bottom: 0.5rem; 
+      display: block; }
+    .panel-state-name {
+      font-family: 'Fraunces', serif;
+      font-size: 1.6rem; color: white; font-weight: 900;
+      line-height: 1.1;
+    }
+    .panel-state-capital { 
+      color: rgba(255,255,255,0.6); 
+      font-size: 0.85rem; margin-top: 0.25rem; }
+    .panel-desc { 
+      color: rgba(255,255,255,0.8); 
+      font-size: 0.85rem; margin-top: 0.75rem; 
+      line-height: 1.5; }
+
+    .close-panel-btn {
+      position: absolute; top: 1.25rem; right: 1.25rem;
+      width: 32px; height: 32px;
+      background: rgba(255,255,255,0.15); border: none;
+      border-radius: 50%; color: white; font-size: 1rem;
+      cursor: pointer; display: grid; place-items: center;
+      transition: background 0.2s;
+    }
+    .close-panel-btn:hover { background: rgba(255,255,255,0.3); }
+
+    /* Stats row */
+    .panel-stats {
+      display: grid; grid-template-columns: repeat(4, 1fr);
+      background: #f8fafc;
+      border-bottom: 1px solid #e8edf3;
+    }
+    .pstat {
+      padding: 1rem 0.5rem;
+      text-align: center;
+      border-right: 1px solid #e8edf3;
+    }
+    .pstat:last-child { border-right: none; }
+    .pstat-num {
+      font-family: 'Fraunces', serif;
+      font-size: 1.8rem; font-weight: 900;
+      color: var(--navy); line-height: 1;
+    }
+    .pstat-label { font-size: 0.68rem; color: #94a3b8; font-weight: 600; margin-top: 0.2rem; text-transform: uppercase; letter-spacing: 0.05em; }
+
+    /* Schemes inside panel */
+    .schemes-wrap { 
+      padding: 1.5rem; 
+      max-height: 520px; 
+      overflow-y: auto; }
+    .schemes-wrap::-webkit-scrollbar { width: 4px; }
+    .schemes-wrap::-webkit-scrollbar-thumb { 
+      background: #dde3ed; 
+      border-radius: 2px; }
+
+    .scheme-section-title {
+      font-size: 0.78rem; font-weight: 700;
+      color: #64748b; letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin: 1.25rem 0 0.75rem;
+      display: flex; align-items: center; gap: 0.5rem;
+    }
+    .scheme-section-title:first-child { margin-top: 0; }
+
+    .scheme-card {
+      border: 1.5px solid #e8edf3;
+      border-radius: 12px;
+      padding: 1rem;
+      margin-bottom: 0.65rem;
+      background: #fafbfc;
+      transition: all 0.2s;
+    }
+    .scheme-card:hover {
+      border-color: var(--emerald);
+      background: white;
+      box-shadow: 0 4px 16px rgba(5,150,105,0.08);
+      transform: translateY(-2px);
+    }
+    .scheme-card-title {
+      font-weight: 700; 
+      font-size: 0.9rem; 
+      color: var(--navy);
+      margin-bottom: 0.35rem;
+    }
+    .scheme-card-benefit {
+      font-size: 0.88rem; 
+      font-weight: 700;
+      color: var(--emerald); 
+      margin-bottom: 0.3rem;
+    }
+    .scheme-card-desc { 
+      font-size: 0.8rem; 
+      color: #64748b; 
+      line-height: 1.5; }
+
+    .no-state-msg {
+      padding: 3rem 1.5rem; text-align: center;
+      color: #94a3b8;
+    }
+    .no-state-msg .hint-icon { 
+      font-size: 3rem; 
+      display: block; 
+      margin-bottom: 1rem; }
+    .no-state-msg h3 { 
+      font-size: 1.1rem; 
+      color: #64748b; 
+      margin-bottom: 0.5rem; }
+    .no-state-msg p { 
+      font-size: 0.875rem; }
+
+    /* placeholder state (before any selection) */
+    .panel-placeholder {
+      display: flex; 
+      flex-direction: column; 
+      align-items: center;
+      justify-content: center; 
+      padding: 4rem 2rem;
+      text-align: center; 
+      color: #94a3b8;
+    }
+    .panel-placeholder .ph-icon { font-size: 4rem; margin-bottom: 1rem; opacity: 0.5; }
+    .panel-placeholder h3 { font-family: 'Fraunces', serif; font-size: 1.2rem; color: #64748b; margin-bottom: 0.5rem; }
+    .panel-placeholder p { font-size: 0.85rem; line-height: 1.6; }
+
+    /* ─── FOOTER ─── */
+    .footer {
+      background: var(--navy);
+      padding: 2rem;
+      text-align: center;
+      color: rgba(255,255,255,0.5);
+      font-size: 0.82rem;
+      margin-top: 3rem;
+    }
+    .footer a { color: var(--saffron); text-decoration: none; }
+  </style>
+</head>
+<body>
+
+<!-- Navbar -->
+<nav class="navbar">
+  <a href="index.html" class="nav-brand">
+    <div class="nav-emblem">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+        <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </div>
+    <div class="nav-title">JANKALYAN<span>Transforming Awareness into Access</span></div>
+  </a>
+  <ul class="nav-links">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="about.html">About</a></li>
+    <li><a href="eligibility.html">Eligibility</a></li>
+    <li><a href="schemes-by-state.html" class="active">State Schemes</a></li>
+    <li><a href="student.html">Schemes</a></li>
+    <li><a href="login.html" class="btn-nav">Login</a></li>
+  </ul>
+</nav>
+
+<!-- Hero -->
+<div class="page-hero">
+  <div class="page-hero-badge">🗺️ INTERACTIVE INDIA MAP</div>
+  <h1>Schemes by <em>State</em></h1>
+  <p>Click any state on the map to instantly explore government welfare schemes available there</p>
+</div>
+
+<div class="main-wrap">
+  <div class="map-panel-split">
+
+    <!-- LEFT: Map Card -->
+    <div class="map-card">
+      <div class="map-card-header">
+        <div>
+          <h2>India — Click a State</h2>
+          <p>28 States · 8 Union Territories · 480+ Schemes</p>
+        </div>
+      </div>
+
+      <!-- Category Filter -->
+      <div class="filter-bar">
+        <button class="filter-btn active" onclick="filterCat('all',this)">All</button>
+        <button class="filter-btn" onclick="filterCat('education',this)">🎓 Education</button>
+        <button class="filter-btn" onclick="filterCat('health',this)">🏥 Health</button>
+        <button class="filter-btn" onclick="filterCat('other',this)">✨ Other</button>
+      </div>
+
+      <!-- SVG India Map -->
+      <div class="map-svg-wrap">
+        <svg viewBox="0 0 950 1060" xmlns="http://www.w3.org/2000/svg" id="india-svg">
+          <!-- Approximate state paths — simplified outlines for interactivity -->
+
+          <!-- Jammu & Kashmir -->
+          <path id="st-jammu-kashmir" class="state-path" onclick="selectState('jammu-kashmir')"
+            d="M295,28 L330,18 L380,22 L420,45 L445,30 L470,48 L460,80 L490,100 L480,130 L450,140 L430,125 L400,135 L380,120 L360,130 L335,115 L310,125 L290,110 L275,85 L285,60 Z">
+            <title>Jammu &amp; Kashmir</title>
+          </path>
+
+          <!-- Ladakh -->
+          <path id="st-ladakh" class="state-path" onclick="selectState('ladakh')"
+            d="M450,30 L530,15 L590,35 L620,65 L600,100 L570,115 L540,105 L510,120 L490,100 L460,80 L470,48 Z">
+            <title>Ladakh</title>
+          </path>
+
+          <!-- Himachal Pradesh -->
+          <path id="st-himachal-pradesh" class="state-path" onclick="selectState('himachal-pradesh')"
+            d="M310,125 L335,115 L360,130 L380,120 L400,135 L415,155 L400,175 L375,180 L350,170 L325,175 L305,160 L295,145 Z">
+            <title>Himachal Pradesh</title>
+          </path>
+
+          <!-- Punjab -->
+          <path id="st-punjab" class="state-path" onclick="selectState('punjab')"
+            d="M275,155 L295,145 L305,160 L325,175 L320,195 L300,210 L275,205 L260,185 Z">
+            <title>Punjab</title>
+          </path>
+
+          <!-- Haryana -->
+          <path id="st-haryana" class="state-path" onclick="selectState('haryana')"
+            d="M300,210 L320,195 L340,200 L355,215 L350,240 L325,250 L300,240 L285,225 Z">
+            <title>Haryana</title>
+          </path>
+
+          <!-- Delhi (small) -->
+          <path id="st-delhi" class="state-path" onclick="selectState('delhi')"
+            d="M330,230 L345,225 L352,235 L345,248 L330,248 L322,240 Z">
+            <title>Delhi</title>
+          </path>
+
+          <!-- Uttarakhand -->
+          <path id="st-uttarakhand" class="state-path" onclick="selectState('uttarakhand')"
+            d="M350,170 L375,180 L400,175 L420,185 L435,205 L415,215 L385,218 L360,210 L345,195 Z">
+            <title>Uttarakhand</title>
+          </path>
+
+          <!-- Uttar Pradesh -->
+          <path id="st-uttar-pradesh" class="state-path" onclick="selectState('uttar-pradesh')"
+            d="M325,250 L350,240 L380,245 L415,215 L440,220 L470,230 L490,255 L510,270 L505,300 L480,315 L450,320 L420,310 L390,318 L360,310 L335,295 L310,280 L305,260 Z">
+            <title>Uttar Pradesh</title>
+          </path>
+
+          <!-- Rajasthan -->
+          <path id="st-rajasthan" class="state-path" onclick="selectState('rajasthan')"
+            d="M200,220 L260,215 L285,225 L300,240 L305,260 L310,280 L290,305 L265,315 L235,310 L205,295 L185,265 L175,240 Z">
+            <title>Rajasthan</title>
+          </path>
+
+          <!-- Gujarat -->
+          <path id="st-gujarat" class="state-path" onclick="selectState('gujarat')"
+            d="M150,320 L185,310 L205,295 L235,310 L250,335 L245,360 L220,380 L195,395 L170,390 L145,370 L130,350 L140,330 Z">
+            <title>Gujarat</title>
+          </path>
+
+          <!-- Madhya Pradesh -->
+          <path id="st-madhya-pradesh" class="state-path" onclick="selectState('madhya-pradesh')"
+            d="M265,315 L290,305 L310,280 L335,295 L360,310 L390,318 L420,310 L445,325 L450,350 L430,370 L400,380 L370,375 L340,380 L310,370 L280,360 L260,345 Z">
+            <title>Madhya Pradesh</title>
+          </path>
+
+          <!-- Maharashtra -->
+          <path id="st-maharashtra" class="state-path" onclick="selectState('maharashtra')"
+            d="M220,390 L245,380 L275,385 L310,380 L340,380 L370,375 L400,380 L430,370 L445,395 L440,425 L415,445 L385,450 L355,445 L325,455 L295,445 L265,430 L240,415 Z">
+            <title>Maharashtra</title>
+          </path>
+
+          <!-- Bihar -->
+          <path id="st-bihar" class="state-path" onclick="selectState('bihar')"
+            d="M480,315 L505,300 L535,308 L560,318 L555,342 L525,352 L495,345 L470,335 Z">
+            <title>Bihar</title>
+          </path>
+
+          <!-- Nepal border / Sikkim area -->
+          <!-- Sikkim (tiny) -->
+          <path id="st-sikkim" class="state-path" onclick="selectState('sikkim')"
+            d="M595,255 L615,255 L620,270 L605,278 L590,268 Z">
+            <title>Sikkim</title>
+          </path>
+
+          <!-- West Bengal -->
+          <path id="st-west-bengal" class="state-path" onclick="selectState('west-bengal')"
+            d="M560,320 L590,315 L615,325 L625,355 L620,385 L605,410 L580,420 L555,415 L540,395 L535,368 L540,345 Z">
+            <title>West Bengal</title>
+          </path>
+
+          <!-- Jharkhand -->
+          <path id="st-jharkhand" class="state-path" onclick="selectState('jharkhand')"
+            d="M510,350 L535,342 L560,352 L565,375 L555,395 L530,400 L505,390 L495,370 Z">
+            <title>Jharkhand</title>
+          </path>
+
+          <!-- Odisha -->
+          <path id="st-odisha" class="state-path" onclick="selectState('odisha')"
+            d="M505,395 L530,400 L555,398 L575,415 L580,440 L565,462 L540,470 L510,460 L490,440 L490,415 Z">
+            <title>Odisha</title>
+          </path>
+
+          <!-- Chhattisgarh -->
+          <path id="st-chhattisgarh" class="state-path" onclick="selectState('chhattisgarh')"
+            d="M445,350 L470,355 L495,348 L510,370 L505,395 L490,415 L468,422 L445,410 L435,390 L438,368 Z">
+            <title>Chhattisgarh</title>
+          </path>
+
+          <!-- Telangana -->
+          <path id="st-telangana" class="state-path" onclick="selectState('telangana')"
+            d="M355,450 L385,450 L415,448 L435,465 L430,490 L410,505 L382,508 L358,495 L345,475 Z">
+            <title>Telangana</title>
+          </path>
+
+          <!-- Andhra Pradesh -->
+          <path id="st-andhra-pradesh" class="state-path" onclick="selectState('andhra-pradesh')"
+            d="M360,510 L382,510 L410,508 L435,520 L450,545 L440,570 L415,580 L385,575 L360,560 L342,540 L345,518 Z">
+            <title>Andhra Pradesh</title>
+          </path>
+
+          <!-- Karnataka -->
+          <path id="st-karnataka" class="state-path" onclick="selectState('karnataka')"
+            d="M280,460 L310,455 L340,458 L358,475 L360,510 L345,535 L320,548 L292,540 L268,520 L260,495 L268,472 Z">
+            <title>Karnataka</title>
+          </path>
+
+          <!-- Goa (tiny) -->
+          <path id="st-goa" class="state-path" onclick="selectState('goa')"
+            d="M257,510 L270,508 L278,520 L270,530 L255,526 L250,515 Z">
+            <title>Goa</title>
+          </path>
+
+          <!-- Kerala -->
+          <path id="st-kerala" class="state-path" onclick="selectState('kerala')"
+            d="M282,542 L305,550 L315,570 L308,600 L290,618 L268,625 L255,610 L258,582 L265,560 Z">
+            <title>Kerala</title>
+          </path>
+
+          <!-- Tamil Nadu -->
+          <path id="st-tamil-nadu" class="state-path" onclick="selectState('tamil-nadu')"
+            d="M318,550 L345,540 L365,558 L375,582 L368,610 L350,632 L325,640 L302,630 L290,615 L300,590 L312,570 Z">
+            <title>Tamil Nadu</title>
+          </path>
+
+          <!-- Assam -->
+          <path id="st-assam" class="state-path" onclick="selectState('assam')"
+            d="M640,288 L675,282 L710,292 L720,315 L700,330 L670,328 L645,318 L635,305 Z">
+            <title>Assam</title>
+          </path>
+
+          <!-- Arunachal Pradesh -->
+          <path id="st-arunachal-pradesh" class="state-path" onclick="selectState('arunachal-pradesh')"
+            d="M640,240 L680,228 L730,235 L768,248 L760,275 L725,282 L690,278 L660,272 L640,260 Z">
+            <title>Arunachal Pradesh</title>
+          </path>
+
+          <!-- Meghalaya -->
+          <path id="st-meghalaya" class="state-path" onclick="selectState('meghalaya')"
+            d="M640,330 L670,328 L700,335 L705,352 L680,360 L648,355 L636,342 Z">
+            <title>Meghalaya</title>
+          </path>
+
+          <!-- Nagaland -->
+          <path id="st-nagaland" class="state-path" onclick="selectState('nagaland')"
+            d="M710,292 L740,288 L752,305 L740,322 L720,318 L708,308 Z">
+            <title>Nagaland</title>
+          </path>
+
+          <!-- Manipur -->
+          <path id="st-manipur" class="state-path" onclick="selectState('manipur')"
+            d="M735,325 L755,320 L768,340 L760,360 L740,365 L725,350 L728,332 Z">
+            <title>Manipur</title>
+          </path>
+
+          <!-- Mizoram -->
+          <path id="st-mizoram" class="state-path" onclick="selectState('mizoram')"
+            d="M720,368 L740,365 L755,380 L748,400 L728,405 L715,390 Z">
+            <title>Mizoram</title>
+          </path>
+
+          <!-- Tripura -->
+          <path id="st-tripura" class="state-path" onclick="selectState('tripura')"
+            d="M698,358 L718,355 L718,375 L705,382 L692,372 Z">
+            <title>Tripura</title>
+          </path>
+
+          <!-- Puducherry (tiny, coastal TN) -->
+          <path id="st-puducherry" class="state-path" onclick="selectState('puducherry')"
+            d="M370,594 L380,590 L384,600 L375,607 L367,600 Z">
+            <title>Puducherry</title>
+          </path>
+
+          <!-- Andaman & Nicobar (island) -->
+          <path id="st-andaman-nicobar" class="state-path" onclick="selectState('andaman-nicobar')"
+            d="M800,550 L810,545 L815,565 L808,580 L798,572 L795,558 Z">
+            <title>Andaman &amp; Nicobar</title>
+          </path>
+
+          <!-- Lakshadweep (island) -->
+          <path id="st-lakshadweep" class="state-path" onclick="selectState('lakshadweep')"
+            d="M160,580 L170,576 L174,590 L165,596 L158,588 Z">
+            <title>Lakshadweep</title>
+          </path>
+
+          <!-- State abbreviation labels -->
+          <text x="360" y="75" class="map-label">J&amp;K</text>
+          <text x="540" y="65" class="map-label">LDK</text>
+          <text x="375" y="155" class="map-label">HP</text>
+          <text x="283" y="185" class="map-label">PB</text>
+          <text x="320" y="228" class="map-label">HR</text>
+          <text x="338" y="243" class="map-label" style="font-size:7px">DL</text>
+          <text x="392" y="198" class="map-label">UK</text>
+          <text x="410" y="280" class="map-label">UP</text>
+          <text x="222" y="268" class="map-label">RJ</text>
+          <text x="192" y="358" class="map-label">GJ</text>
+          <text x="345" y="345" class="map-label">MP</text>
+          <text x="340" y="420" class="map-label">MH</text>
+          <text x="525" y="325" class="map-label">BR</text>
+          <text x="545" y="380" class="map-label">JH</text>
+          <text x="575" y="375" class="map-label">WB</text>
+          <text x="465" y="388" class="map-label">CG</text>
+          <text x="530" y="435" class="map-label">OD</text>
+          <text x="393" y="482" class="map-label">TS</text>
+          <text x="393" y="545" class="map-label">AP</text>
+          <text x="305" y="503" class="map-label">KA</text>
+          <text x="262" y="522" class="map-label" style="font-size:7px">GA</text>
+          <text x="282" y="588" class="map-label">KL</text>
+          <text x="335" y="595" class="map-label">TN</text>
+          <text x="677" y="308" class="map-label">AS</text>
+          <text x="700" y="258" class="map-label">AR</text>
+          <text x="672" y="348" class="map-label" style="font-size:7px">ML</text>
+          <text x="730" y="308" class="map-label" style="font-size:7px">NL</text>
+          <text x="748" y="345" class="map-label" style="font-size:7px">MN</text>
+          <text x="737" y="390" class="map-label" style="font-size:7px">MZ</text>
+          <text x="706" y="372" class="map-label" style="font-size:7px">TR</text>
+          <text x="604" y="268" class="map-label" style="font-size:7px">SK</text>
+
+          <style>
+            .map-label {
+              font-family: 'DM Sans', sans-serif;
+              font-size: 9px; font-weight: 700;
+              fill: rgba(255,255,255,0.9);
+              text-anchor: middle;
+              pointer-events: none;
+              user-select: none;
+            }
+          </style>
+        </svg>
+      </div>
+
+      <div class="map-hint">
+        <span>💡</span>
+        <span id="mapHintText">Click on any highlighted state to view its welfare schemes</span>
+      </div>
+
+      <!-- State Buttons Toggle -->
+      <div class="state-grid-toggle">
+        <span class="toggle-label">Prefer list?</span>
+        <button class="toggle-btn" id="toggleGridBtn" onclick="toggleStateGrid()">Show All States ↓</button>
+      </div>
+      <div id="stateButtonsWrap">
+        <div class="state-btn-grid" id="stateButtonGrid"></div>
+      </div>
+    </div>
+
+    <!-- RIGHT: State Info Panel -->
+    <div class="state-info-panel" id="stateInfoPanel">
+      <div id="panelContent">
+        <div class="panel-placeholder">
+          <span class="ph-icon">🗺️</span>
+          <h3>Select a State</h3>
+          <p>Click any state on the map or use the list below to explore government schemes available in that state.</p>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<footer class="footer">
+  <p>&copy; 2025–2026 JanKalyan, India. All rights reserved. | <a href="about.html">About</a> · <a href="index.html">Home</a> · Informational portal — not an official government website.</p>
+</footer>
+
+<script>
+// ─── STATE DATA ───────────────────────────────────────────────────────────────
+const stateData = {
+  'jammu-kashmir': { name: 'Jammu & Kashmir', emoji: '❄️', capital: 'Srinagar', description: 'Mountain welfare and tourism programs for Himalayan regions', schemes: { education: [{ title: 'JK Scholarship Scheme', benefit: '₹15,000/year', desc: 'Merit-based educational assistance for students' }, { title: 'National Means-cum-Merit Scholarship', benefit: '₹12,000/year', desc: 'Central scholarship for meritorious students from poor families' }], health: [{ title: 'PMJAY Ayushman Bharat', benefit: '₹5 lakh cover', desc: 'National health protection scheme for poor households' }, { title: 'Sehat Health Insurance', benefit: '₹5 lakh cover', desc: 'Universal health coverage for all residents of J&K' }], other: [{ title: 'MGNREGS', benefit: '100 days work', desc: 'Rural employment guarantee for unskilled labor' }, { title: 'PMAY Gramin', benefit: '₹1.2 lakh grant', desc: 'Housing for rural BPL families' }] } },
+  'ladakh': { name: 'Ladakh', emoji: '🏔️', capital: 'Leh', description: 'High-altitude welfare programs for mountain communities', schemes: { education: [{ title: 'Ladakh Scholarship', benefit: '₹12,000/year', desc: 'Educational assistance for students in the cold desert region' }], health: [{ title: 'PMJAY Ayushman Bharat', benefit: '₹5 lakh cover', desc: 'Health insurance scheme for poor families' }, { title: 'Mobile Health Units', benefit: 'Free checkup', desc: 'Healthcare outreach for remote Ladakhi villages' }], other: [{ title: 'MGNREGS', benefit: '100 days work', desc: 'Rural employment guarantee' }, { title: 'Solar Home System', benefit: 'Subsidy', desc: 'Solar energy for remote areas without grid connectivity' }] } },
+  'himachal-pradesh': { name: 'Himachal Pradesh', emoji: '🏔️', capital: 'Shimla', description: 'Mountain welfare and tourism development with hill community support', schemes: { education: [{ title: 'Himalaya Scholarship', benefit: '₹15,000/year', desc: 'General scholarship scheme for students' }, { title: 'Mukhyamantri Vigyan Protsahan Yojana', benefit: '₹10,000', desc: 'Science students incentive program' }], health: [{ title: 'PMJAY Ayushman Bharat', benefit: '₹5 lakh cover', desc: 'National health protection program' }, { title: 'HIMCARE', benefit: '₹5 lakh cover', desc: 'HP government top-up health coverage' }], other: [{ title: 'MGNREGS', benefit: '100 days work', desc: 'Rural employment guarantee scheme' }, { title: 'HP Apple Farmer Relief', benefit: 'Direct transfer', desc: 'Compensation for crop damage to apple orchards' }] } },
+  'punjab': { name: 'Punjab', emoji: '🌾', capital: 'Chandigarh', description: 'Agricultural and industrial welfare programs for farming communities', schemes: { education: [{ title: 'Punjab Scholarship Scheme', benefit: '₹20,000/year', desc: 'Educational assistance for SC/BC students' }, { title: 'Post Matric Scholarship', benefit: '₹18,000/year', desc: 'Scholarship for students after Class 10' }], health: [{ title: 'Sarbat Sehat Bima Yojana', benefit: '₹5 lakh cover', desc: 'State health insurance including all residents' }], other: [{ title: 'Farmer Income Support Scheme', benefit: 'Direct transfer', desc: 'Financial assistance for wheat/paddy farmers' }, { title: 'Aam Aadmi Clinic', benefit: 'Free OPD', desc: '800+ free healthcare clinics across Punjab' }] } },
+  'haryana': { name: 'Haryana', emoji: '🌾', capital: 'Chandigarh', description: 'Agricultural and skill development programs for rural communities', schemes: { education: [{ title: 'Dr. Ambedkar Scholarship', benefit: '₹12,000/year', desc: 'SC student scholarship scheme' }, { title: 'Saksham Yojana', benefit: '₹9,000/month', desc: 'Unemployment allowance + honorarium for educated youth' }], health: [{ title: 'PMJAY Ayushman Bharat', benefit: '₹5 lakh cover', desc: 'Health insurance for poor households' }], other: [{ title: 'Kisan Samman Nidhi', benefit: '₹6,000/year', desc: 'Direct income support for all farmers' }, { title: 'Mukhyamantri Awas Yojana', benefit: 'Subsidy', desc: 'Affordable housing for urban poor' }] } },
+  'uttar-pradesh': { name: 'Uttar Pradesh', emoji: '🏙️', capital: 'Lucknow', description: 'Large-state welfare with comprehensive support programs', schemes: { education: [{ title: 'UP Scholarship', benefit: '₹20,000/year', desc: 'Educational assistance for pre and post matric students' }, { title: 'Kanya Sumangala Yojana', benefit: '₹15,000', desc: 'Girl child welfare scheme from birth to Class 12' }, { title: 'Abhyudaya Coaching', benefit: 'Free coaching', desc: 'Free IAS/IPS/PCS coaching for meritorious students' }], health: [{ title: 'PMJAY Ayushman Bharat', benefit: '₹5 lakh cover', desc: 'Health protection for 10 crore+ beneficiaries in UP' }, { title: 'CM Jan Arogya Yojana', benefit: '₹5 lakh extra', desc: 'UP state health top-up over Ayushman' }], other: [{ title: 'MGNREGS', benefit: '100 days work', desc: 'Rural employment guarantee scheme' }, { title: 'Mukhyamantri Awas Yojana', benefit: 'Free house', desc: 'Homeless urban families housing scheme' }] } },
+  'rajasthan': { name: 'Rajasthan', emoji: '🏜️', capital: 'Jaipur', description: 'Desert welfare and mineral sector programs', schemes: { education: [{ title: 'Rajasthan Scholarship', benefit: '₹12,000/year', desc: 'Educational assistance for meritorious students' }, { title: 'Palanhar Yojana', benefit: '₹1,500/month', desc: 'Orphan and destitute child support scheme' }, { title: 'Mukhyamantri Ucch Shiksha Chhatravritti', benefit: '₹5,000/year', desc: 'Higher education scholarship for girl students' }], health: [{ title: 'Chiranjeevi Swasthya Bima Yojana', benefit: '₹25 lakh cover', desc: 'Rajasthan state universal health insurance scheme' }], other: [{ title: 'MGNREGS', benefit: '100 days work', desc: 'Rural employment guarantee' }, { title: 'Indira Gandhi Shahri Rojgar Guarantee', benefit: '100 days work', desc: 'Urban employment guarantee — first in India' }] } },
+  'gujarat': { name: 'Gujarat', emoji: '🏭', capital: 'Gandhinagar', description: 'Industrial and business development welfare', schemes: { education: [{ title: 'Gujarat Scholarship Scheme', benefit: '₹20,000/year', desc: 'Merit and need-based scholarships for students' }, { title: 'Mukhyamantri Kanya Kelavni Nidhi', benefit: '₹30,000', desc: 'Girl student recognition and support scheme' }], health: [{ title: 'Mukhyamantri Amrutam Yojana', benefit: '₹5 lakh cover', desc: 'State health insurance for BPL and low-income families' }], other: [{ title: 'iKhedut Scheme', benefit: 'Various subsidies', desc: 'Online portal providing 80+ agricultural schemes' }, { title: 'Startup Gujarat', benefit: 'Up to ₹20 lakh', desc: 'Startup seed funding and mentorship program' }] } },
+  'maharashtra': { name: 'Maharashtra', emoji: '🏙️', capital: 'Mumbai', description: 'Industrial and agricultural hub with diverse programs', schemes: { education: [{ title: 'Rajiv Gandhi Scholarship', benefit: '₹12,000/year', desc: 'Merit-based scholarship scheme' }, { title: 'Swavalamban Scholarship', benefit: '₹10,000/year', desc: 'SC student scholarship for higher education' }, { title: 'Dr. Panjabrao Deshmukh Vasatigraha', benefit: '₹1,200/month', desc: 'Hostel assistance for OBC students' }], health: [{ title: 'Mahatma Jyotiba Phule Jan Arogya Yojana', benefit: '₹5 lakh cover', desc: 'MH state health insurance for yellow/orange ration card holders' }], other: [{ title: 'Employment Guarantee Scheme', benefit: '100 days work', desc: 'Maharashtra rural employment — oldest EGS in India' }, { title: 'Shubh Mangal Samuhi Vivah', benefit: '₹10,000 grant', desc: 'Mass marriage financial assistance scheme' }] } },
+  'bihar': { name: 'Bihar', emoji: '🌳', capital: 'Patna', description: 'Educational and employment welfare focused on skill development', schemes: { education: [{ title: 'Bihar Student Credit Card', benefit: '₹4 lakh loan', desc: 'Interest-free education loan for higher studies' }, { title: 'Mukhyamantri Balika Cycle Yojana', benefit: 'Free cycle', desc: 'Cycles for Class 9 girl students to prevent dropout' }, { title: 'Mukhyamantri Balika Scholarship', benefit: '₹10,000/year', desc: 'Girl student incentive for Class 12 passouts' }], health: [{ title: 'PMJAY Ayushman Bharat', benefit: '₹5 lakh cover', desc: 'National health insurance program' }], other: [{ title: 'MGNREGS', benefit: '100 days work', desc: 'Rural employment guarantee' }, { title: 'Mukhyamantri Udyami Yojana', benefit: '₹10 lakh loan', desc: 'Startup loan for SC/ST/women entrepreneurs' }] } },
+  'west-bengal': { name: 'West Bengal', emoji: '🏛️', capital: 'Kolkata', description: 'Industrial and cultural welfare programs', schemes: { education: [{ title: 'Swami Vivekananda Merit Scholarship', benefit: '₹12,000/year', desc: 'Merit-cum-means scholarship for students' }, { title: 'Sikshashree', benefit: '₹800/year', desc: 'SC student scholarship from Class 5' }, { title: 'Kanyashree Prakalpa', benefit: '₹25,000', desc: 'Girls staying in school cash transfer program' }], health: [{ title: 'Swasthya Sathi', benefit: '₹5 lakh cover', desc: 'Universal health insurance — covers all families' }], other: [{ title: 'MGNREGS', benefit: '100 days work', desc: 'Rural employment guarantee' }, { title: 'Krishak Bandhu', benefit: '₹10,000/year', desc: 'Farmer welfare and death benefit scheme' }] } },
+  'karnataka': { name: 'Karnataka', emoji: '☕', capital: 'Bengaluru', description: 'IT and manufacturing welfare programs', schemes: { education: [{ title: 'Rajiv Gandhi Scholarship', benefit: '₹15,000/year', desc: 'Merit-based scheme for college students' }, { title: 'Vidyasiri Scholarship', benefit: '₹12,000/year', desc: 'OBC student higher education support' }, { title: 'Mukhyamantri Sandhya Suraksha Yojana', benefit: '₹1,000/month', desc: 'Financial aid for differently abled students' }], health: [{ title: 'Arogya Karnataka', benefit: '₹5 lakh cover', desc: 'State universal health coverage scheme' }, { title: 'Yashaswini Scheme', benefit: 'Surgical cover', desc: 'Cooperative health insurance for rural Karnataka' }], other: [{ title: 'Bhagyalakshmi Yojana', benefit: '₹2 lakh bond', desc: 'Girl child welfare bond at birth' }, { title: 'Anna Bhagya', benefit: '10 kg rice free', desc: 'Food security scheme for BPL families' }] } },
+  'andhra-pradesh': { name: 'Andhra Pradesh', emoji: '🌾', capital: 'Amaravati', description: 'Agricultural welfare and development programs', schemes: { education: [{ title: 'Jagananna Gorumudda', benefit: '₹15,000/year', desc: 'Nutritional and monetary support for student welfare' }, { title: 'Jagananna Vasati Deevena', benefit: '₹20,000/year', desc: 'Hostel allowance for residential college students' }, { title: 'Amma Vodi', benefit: '₹15,000/year', desc: 'Mother assistance scheme — cash for child attendance' }], health: [{ title: 'YSR Aarogyasri', benefit: 'Free treatment', desc: 'Comprehensive health coverage for BPL families' }, { title: 'YSR Amma Vodi Health', benefit: 'Free healthcare', desc: 'Women health and nutrition programs' }], other: [{ title: 'Indiramma Housing', benefit: 'Free house', desc: 'Housing construction for BPL families' }, { title: 'YSR Pensions', benefit: '₹3,000/month', desc: 'Old age, widow, and disability pensions' }] } },
+  'telangana': { name: 'Telangana', emoji: '⚪', capital: 'Hyderabad', description: 'IT and industrial welfare programs', schemes: { education: [{ title: 'Vidya Lakshmi Bonds', benefit: '₹1 lakh bond', desc: 'Education bonds for girl students from BPL families' }, { title: 'Kakatiya e-Scholarship', benefit: '₹15,000/year', desc: 'Online merit scholarship scheme' }], health: [{ title: 'Aarogyasri Health Scheme', benefit: '₹5 lakh cover', desc: 'Cashless health insurance for BPL and white ration card holders' }, { title: 'KCR Kit', benefit: 'Nutrition kit + ₹12,000', desc: 'Maternal nutrition kit and cash for institutional delivery' }], other: [{ title: 'Rythu Bandhu', benefit: '₹10,000/acre', desc: 'Investment support for all farmers — unique model' }, { title: 'Gruha Lakshmi', benefit: '₹2,500/month', desc: 'Monthly financial support to women heads of household' }] } },
+  'kerala': { name: 'Kerala', emoji: '🥥', capital: 'Thiruvananthapuram', description: 'High-literacy welfare and spice sector programs', schemes: { education: [{ title: 'Kerala Scholarship', benefit: '₹20,000/year', desc: 'Educational assistance for meritorious students' }, { title: 'Vidyakiranam', benefit: 'School kit', desc: 'Free school supplies for BPL families' }], health: [{ title: 'Aardram Mission', benefit: 'Free health cards', desc: 'Universal primary healthcare via upgraded PHCs' }, { title: 'Karunya Health Scheme', benefit: '₹5 lakh cover', desc: 'Health insurance for BPL families not covered by PMJAY' }], other: [{ title: 'Kudumbashree', benefit: 'Microfinance', desc: 'Women self-help group microfinance and livelihood' }, { title: 'Kerala Unemployment Allowance', benefit: '₹350/month', desc: 'Monthly unemployment relief for registered job seekers' }] } },
+  'tamil-nadu': { name: 'Tamil Nadu', emoji: '🏛️', capital: 'Chennai', description: 'Manufacturing and textile welfare programs', schemes: { education: [{ title: 'Tamil Nadu Chief Minister Scholarship', benefit: '₹15,000/year', desc: 'Scholarship for meritorious government school students' }, { title: 'Moovalur Ramamirtham Scholarship', benefit: '₹1,000/month', desc: 'Girl student support to prevent early marriage' }, { title: 'Dr. Ambedkar Law Scholarship', benefit: '₹5,000/month', desc: 'SC/ST student law education scholarship' }], health: [{ title: 'Chief Minister Kalaignar Veeddu Scheme', benefit: 'Free treatment', desc: 'Comprehensive health insurance for TN residents' }, { title: 'Dr. Muthulakshmi Reddy Maternity Benefit', benefit: '₹18,000', desc: 'Cash transfer for pregnant working women' }], other: [{ title: 'Amma Unavagam', benefit: 'Meals at ₹1', desc: 'Subsidised food for urban poor — 700+ canteens' }, { title: 'TNSF Solar Scheme', benefit: 'Solar subsidy', desc: 'Subsidised solar panels for domestic consumers' }] } },
+  'madhya-pradesh': { name: 'Madhya Pradesh', emoji: '🌾', capital: 'Bhopal', description: 'Agricultural and tribal community welfare programs', schemes: { education: [{ title: 'Ladli Lakshmi Yojana 2.0', benefit: '₹1,43,000', desc: 'Comprehensive girl welfare from birth to graduation' }, { title: 'MP Scholarship Portal', benefit: '₹12,000/year', desc: 'Consolidated online scholarship for all categories' }], health: [{ title: 'PMJAY Ayushman Bharat', benefit: '₹5 lakh cover', desc: 'National health insurance scheme' }, { title: 'Mukhyamantri Tirth Darshan', benefit: 'Free pilgrimage', desc: 'Free religious travel for senior citizens' }], other: [{ title: 'MGNREGS', benefit: '100 days work', desc: 'Rural employment guarantee' }, { title: 'Mukhyamantri Udyam Kranti Yojana', benefit: 'Loan up to ₹50L', desc: 'Interest-free business loan for youth entrepreneurs' }] } },
+  'odisha': { name: 'Odisha', emoji: '🏝️', capital: 'Bhubaneswar', description: 'Mining and coastal welfare programs', schemes: { education: [{ title: 'Odisha SVMCM Scholarship', benefit: '₹15,000/year', desc: 'Swami Vivekananda merit scholarship for students' }, { title: 'Kalinga Sikhya Sathi Yojana', benefit: '₹1 lakh loan', desc: 'Education loan at 1% interest for higher education' }], health: [{ title: 'Biju Swasthya Kalyan Yojana', benefit: '₹5 lakh cover (women ₹10L)', desc: 'State health insurance — women get double coverage' }], other: [{ title: 'KALIA Scheme', benefit: '₹25,000 over 5 seasons', desc: 'Comprehensive livelihood and income support for farmers' }, { title: 'Mission Shakti', benefit: 'Revolving fund + support', desc: 'Women SHG empowerment — 70 lakh members' }] } },
+  'assam': { name: 'Assam', emoji: '🌿', capital: 'Dispur', description: 'Tea garden and agricultural welfare programs', schemes: { education: [{ title: 'Anundoram Borooah Award', benefit: 'Laptop + prize', desc: 'Award for HSLC and HS meritorious students' }, { title: 'Ishan Uday NE Scholarship', benefit: '₹7,800/month', desc: 'UGC scholarship for North-East students' }], health: [{ title: 'Atal Amrit Abhiyan', benefit: '₹2 lakh cover', desc: 'Comprehensive health coverage for BPL families' }], other: [{ title: 'Orunodoi', benefit: '₹1,250/month', desc: 'Cash transfer to women beneficiaries' }, { title: 'Mukhyamantri Mhila Udyamita Abhiyan', benefit: 'Microfinance', desc: 'Women entrepreneur support scheme' }] } },
+  'jharkhand': { name: 'Jharkhand', emoji: '⛏️', capital: 'Ranchi', description: 'Mining and tribal welfare programs', schemes: { education: [{ title: 'Mukhyamantri Scholarship', benefit: '₹10,000/year', desc: 'Educational assistance for tribal and BPL students' }, { title: 'Savitribai Phule Kishori Samridhi Yojana', benefit: '₹40,000', desc: 'Girls welfare scheme from Class 8 to marriage' }], health: [{ title: 'PMJAY Ayushman Bharat', benefit: '₹5 lakh cover', desc: 'Health insurance scheme' }, { title: 'Universal Immunization + Nutrition', benefit: 'Free', desc: 'Child and maternal nutrition programs in tribal areas' }], other: [{ title: 'Mukhyamantri Sukha Yojana', benefit: 'Drought relief', desc: 'Agricultural support during dry conditions' }, { title: 'Aapki Yojana Aapki Sarkar', benefit: 'Various', desc: 'Camp-based doorstep delivery of 30+ schemes' }] } },
+  'chhattisgarh': { name: 'Chhattisgarh', emoji: '⛏️', capital: 'Raipur', description: 'Mining and forest-based welfare programs', schemes: { education: [{ title: 'Rajiv Gandhi Scholarship CG', benefit: '₹12,000/year', desc: 'Merit-based scholarships for all students' }, { title: 'Swami Atmanand Excellence Schools', benefit: 'Free quality education', desc: 'English medium government schools' }], health: [{ title: 'Mukhyamantri Vishesh Swasthya Sahayata', benefit: '₹20 lakh cover', desc: 'High-end treatment coverage for BPL' }], other: [{ title: 'MGNREGS', benefit: '100 days work', desc: 'Rural employment guarantee' }, { title: 'Rajiv Gandhi Kisan Nyay Yojana', benefit: '₹10,000/acre', desc: 'Income support for paddy, maize, soybean farmers' }] } },
+  'goa': { name: 'Goa', emoji: '🏖️', capital: 'Panaji', description: 'Tourism and marine sector welfare programs', schemes: { education: [{ title: 'Goa Merit Scholarship', benefit: '₹15,000/year', desc: 'Educational assistance for meritorious students' }, { title: 'Dayanand Bandodkar Scholarship', benefit: '₹10,000/year', desc: 'SC/ST student higher education support' }], health: [{ title: 'Deen Dayal Swasthya Seva Yojana', benefit: '₹4 lakh cover', desc: 'Goa universal health insurance for all residents' }], other: [{ title: 'PM Ujjwala Yojana', benefit: 'Free LPG connection', desc: 'Clean cooking fuel for BPL women' }, { title: 'Goa Tourism Employment Scheme', benefit: 'Monthly stipend', desc: 'Youth employment in tourism sector' }] } },
+  'delhi': { name: 'Delhi', emoji: '🏛️', capital: 'New Delhi', description: 'Urban welfare, premium public health, and education infrastructure models', schemes: { education: [{ title: 'Jai Bhim Mukhyamantri Pratibha Vikas Yojana', benefit: 'Free coaching', desc: 'Free coaching for competitive exams to SC/ST/OBC/EWS students' }, { title: 'Delhi Ladli Scheme', benefit: 'Up to ₹1 lakh', desc: 'Financial assistance tracking a girl child from birth to Grade 12' }], health: [{ title: 'Aam Aadmi Mohalla Clinic', benefit: 'Free treatment', desc: 'Primary healthcare centers offering free consultation, medicines, and 450+ tests' }, { title: 'Delhi Arogya Kosh', benefit: 'Free surgery', desc: 'Financial assistance for high-end surgeries in private hospitals' }], other: [{ title: 'Mukhyamantri Kiraya Kirayedar Bijli Yojana', benefit: '200 units free', desc: 'Subsidized electricity up to 200 units for domestic tenants' }, { title: 'Delhi Pension Scheme', benefit: '₹2,500/month', desc: 'Financial assistance for senior citizens and disabled residents' }] } },
+  'uttarakhand': { name: 'Uttarakhand', emoji: '🏔️', capital: 'Dehradun', description: 'Eco-tourism development and mountain community livelihood support', schemes: { education: [{ title: 'Gaura Devi Kanya Dhan Yojana', benefit: '₹50,000 grant', desc: 'Financial assistance for underprivileged girl students passing Class 12' }, { title: 'Mukhyamantri Uchha Shiksha Protsahan Yojana', benefit: 'Monthly stipend', desc: 'Scholarships for meritorious students pursuing higher education' }], health: [{ title: 'Atal Ayushman Uttarakhand Yojana', benefit: '₹5 lakh cover', desc: 'Universal health insurance coverage covering all families in the state' }], other: [{ title: 'Mukhyamantri Swarozgar Yojana', benefit: '25% subsidy', desc: 'Financial assistance and project subsidies for manufacturing and service startups' }, { title: 'Ghasyari Kalyan Yojana', benefit: 'Subsidized fodder', desc: 'Distribution of nutritious green fodder compound to rural women cattle owners' }] } },
+  'punjab': { name: 'Punjab', emoji: '🌾', capital: 'Chandigarh', description: 'Agricultural and industrial welfare programs', schemes: { education: [{ title: 'Punjab Post-Matric Scholarship', benefit: '₹20,000/year', desc: 'SC/BC student scholarship for higher education' }], health: [{ title: 'Sarbat Sehat Bima Yojana', benefit: '₹5 lakh cover', desc: 'Universal health coverage including farmers' }], other: [{ title: 'Farmer Income Support Scheme', benefit: 'Direct transfer', desc: 'Financial assistance for wheat/paddy farmers' }, { title: 'Aam Aadmi Clinic', benefit: 'Free OPD', desc: '750+ free healthcare clinics across the state' }] } },
+  'arunachal-pradesh': { name: 'Arunachal Pradesh', emoji: '🏔️', capital: 'Itanagar', description: 'North-Eastern development schemes for tribal welfare', schemes: { education: [{ title: 'State Scholarship Scheme', benefit: '₹20,000/year', desc: 'Merit-based educational scholarships' }, { title: 'Ishan Uday Scholarship', benefit: '₹7,800/month', desc: 'UGC-sponsored scholarship for NE states' }], health: [{ title: 'PMJAY Ayushman Bharat', benefit: '₹5 lakh cover', desc: 'National health insurance scheme' }], other: [{ title: 'MGNREGS', benefit: '100 days work', desc: 'Rural employment guarantee scheme' }, { title: 'Tribal Sub Plan', benefit: 'Various', desc: 'Dedicated welfare fund for tribal development' }] } },
+  'meghalaya': { name: 'Meghalaya', emoji: '🌧️', capital: 'Shillong', description: 'North-Eastern hill community welfare programs', schemes: { education: [{ title: 'Ishan Uday Scholarship', benefit: '₹7,800/month', desc: 'UGC scholarship for NE students' }], health: [{ title: 'MHIS Megha Health Insurance', benefit: '₹5 lakh cover', desc: 'State health insurance for BPL families' }], other: [{ title: 'MGNREGS', benefit: '100 days work', desc: 'Rural employment guarantee scheme' }, { title: 'Chief Minister\'s Community Village Development Scheme', benefit: 'Infrastructure grant', desc: 'Village-level infrastructure development' }] } },
+  'nagaland': { name: 'Nagaland', emoji: '⛰️', capital: 'Kohima', description: 'North-Eastern tribal welfare programs', schemes: { education: [{ title: 'Ishan Uday Scholarship', benefit: '₹7,800/month', desc: 'UGC scholarship for NE students' }, { title: 'Naga Student Scholarship', benefit: '₹15,000/year', desc: 'State scholarship for tribal students' }], health: [{ title: 'PMJAY Ayushman Bharat', benefit: '₹5 lakh cover', desc: 'National health insurance' }], other: [{ title: 'MGNREGS', benefit: '100 days work', desc: 'Rural employment guarantee' }, { title: 'Nagaland Livelihood Project', benefit: 'Microfinance', desc: 'Rural livelihood support program' }] } },
+  'manipur': { name: 'Manipur', emoji: '💎', capital: 'Imphal', description: 'North-Eastern welfare and cultural programs', schemes: { education: [{ title: 'Ishan Uday Scholarship', benefit: '₹7,800/month', desc: 'UGC scholarship for NE students' }], health: [{ title: 'PMJAY Ayushman Bharat', benefit: '₹5 lakh cover', desc: 'National health insurance' }, { title: 'RSBY Manipur', benefit: '₹30,000 cover', desc: 'Rashtriya Swasthya Bima Yojana for BPL' }], other: [{ title: 'MGNREGS', benefit: '100 days work', desc: 'Rural employment guarantee' }, { title: 'Manipur Bamboo Development Agency', benefit: 'Training + fund', desc: 'Bamboo craft livelihood support' }] } },
+  'mizoram': { name: 'Mizoram', emoji: '🌲', capital: 'Aizawl', description: 'North-Eastern forestry welfare programs', schemes: { education: [{ title: 'Ishan Uday Scholarship', benefit: '₹7,800/month', desc: 'UGC scholarship for NE students' }], health: [{ title: 'PMJAY Ayushman Bharat', benefit: '₹5 lakh cover', desc: 'National health insurance' }], other: [{ title: 'MGNREGS', benefit: '100 days work', desc: 'Rural employment guarantee' }, { title: 'New Land Use Policy', benefit: 'Subsidy', desc: 'Agricultural development for shifting cultivators' }] } },
+  'tripura': { name: 'Tripura', emoji: '🌿', capital: 'Agartala', description: 'North-Eastern agricultural welfare programs', schemes: { education: [{ title: 'Ishan Uday Scholarship', benefit: '₹7,800/month', desc: 'UGC scholarship for NE students' }, { title: 'Mukhyamantri Yuva Yojana', benefit: '₹2,000/month', desc: 'Youth unemployment allowance' }], health: [{ title: 'PMJAY Ayushman Bharat', benefit: '₹5 lakh cover', desc: 'National health insurance' }], other: [{ title: 'MGNREGS', benefit: '100 days work', desc: 'Rural employment guarantee' }] } },
+  'sikkim': { name: 'Sikkim', emoji: '🏔️', capital: 'Gangtok', description: 'Organic farming and mountain welfare programs', schemes: { education: [{ title: 'Ishan Uday Scholarship', benefit: '₹7,800/month', desc: 'UGC scholarship for NE students' }, { title: 'CM Scholarship Sikkim', benefit: '₹15,000/year', desc: 'State merit scholarship for Sikkimese students' }], health: [{ title: 'PMJAY Ayushman Bharat', benefit: '₹5 lakh cover', desc: 'National health insurance' }], other: [{ title: 'MGNREGS', benefit: '100 days work', desc: 'Rural employment guarantee' }, { title: 'Organic Farming Support', benefit: 'Certification + subsidy', desc: '100% organic state — farmer support scheme' }] } },
+  'puducherry': { name: 'Puducherry', emoji: '🏖️', capital: 'Puducherry', description: 'Union Territory welfare and coastal development', schemes: { education: [{ title: 'Puducherry Scholarship Scheme', benefit: '₹10,000/year', desc: 'Educational assistance for meritorious students' }], health: [{ title: 'PMJAY Ayushman Bharat', benefit: '₹5 lakh cover', desc: 'National health insurance' }, { title: 'PY Government Hospital', benefit: 'Free treatment', desc: 'Universal free treatment in government hospitals' }], other: [{ title: 'Social Security', benefit: 'Various benefits', desc: 'Old age pension and welfare schemes' }] } },
+  'andaman-nicobar': { name: 'Andaman & Nicobar Islands', emoji: '🏝️', capital: 'Port Blair', description: 'Island welfare and tribal protection programs', schemes: { education: [{ title: 'Island Scholarship', benefit: '₹12,000/year', desc: 'Educational assistance for island students' }], health: [{ title: 'PMJAY Ayushman Bharat', benefit: '₹5 lakh cover', desc: 'National health insurance' }], other: [{ title: 'Tribal Welfare Schemes', benefit: 'Various', desc: 'Particularly Vulnerable Tribal Group (PVTG) support' }] } },
+  'lakshadweep': { name: 'Lakshadweep', emoji: '🏝️', capital: 'Kavaratti', description: 'Island welfare programs for marine communities', schemes: { education: [{ title: 'Island Scholarship', benefit: '₹12,000/year', desc: 'Educational assistance for island residents' }], health: [{ title: 'PMJAY Ayushman Bharat', benefit: '₹5 lakh cover', desc: 'National health insurance' }], other: [{ title: 'Fisheries Subsidy', benefit: 'Subsidised boats/nets', desc: 'Marine fishing community support' }] } },
+};
+
+// ─── GLOBALS ──────────────────────────────────────────────────────────────────
+let currentFilter = 'all';
+let currentState = null;
+
+// ─── FILTER ───────────────────────────────────────────────────────────────────
+function filterCat(cat, btn) {
+  currentFilter = cat;
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  if (currentState) renderPanel(currentState);
+}
+
+// ─── SELECT STATE ─────────────────────────────────────────────────────────────
+function selectState(id) {
+  if (!stateData[id]) return;
+  currentState = id;
+
+  // Update map paths
+  document.querySelectorAll('.state-path').forEach(p => {
+    p.classList.remove('selected', 'dim');
+  });
+  const el = document.getElementById('st-' + id);
+  if (el) el.classList.add('selected');
+
+  // Update state buttons
+  document.querySelectorAll('.state-btn').forEach(b => {
+    b.classList.toggle('selected', b.dataset.id === id);
+  });
+
+  // Update hint
+  const state = stateData[id];
+  document.getElementById('mapHintText').textContent = `Showing schemes for ${state.name} — ${countSchemes(id)} total schemes`;
+
+  renderPanel(id);
+}
+
+function countSchemes(id) {
+  const s = stateData[id].schemes;
+  return (s.education?.length || 0) + (s.health?.length || 0) + (s.other?.length || 0);
+}
+
+// ─── RENDER PANEL ─────────────────────────────────────────────────────────────
+function renderPanel(id) {
+  const state = stateData[id];
+  const panel = document.getElementById('stateInfoPanel');
+  const content = document.getElementById('panelContent');
+
+  const edu = state.schemes.education || [];
+  const health = state.schemes.health || [];
+  const other = state.schemes.other || [];
+  const total = edu.length + health.length + other.length;
+
+  let schemesHTML = '';
+  if (currentFilter === 'all' || currentFilter === 'education') {
+    if (edu.length) schemesHTML += buildSection('🎓 Education', edu, '#3b82f6');
+  }
+  if (currentFilter === 'all' || currentFilter === 'health') {
+    if (health.length) schemesHTML += buildSection('🏥 Health', health, '#ef4444');
+  }
+  if (currentFilter === 'all' || currentFilter === 'other') {
+    if (other.length) schemesHTML += buildSection('✨ Other Welfare', other, '#f59e0b');
+  }
+  if (!schemesHTML) schemesHTML = '<div class="no-state-msg"><span class="hint-icon">🔍</span><h3>No schemes in this category</h3><p>Try switching to "All" to see all available schemes.</p></div>';
+
+  content.innerHTML = `
+    <div class="panel-header">
+      <button class="close-panel-btn" onclick="closePanel()">✕</button>
+      <span class="panel-state-emoji">${state.emoji}</span>
+      <div class="panel-state-name">${state.name}</div>
+      <div class="panel-state-capital">🏛 Capital: ${state.capital}</div>
+      <div class="panel-desc">${state.description}</div>
+    </div>
+    <div class="panel-stats">
+      <div class="pstat">
+        <div class="pstat-num">${total}</div>
+        <div class="pstat-label">Total</div>
+      </div>
+      <div class="pstat">
+        <div class="pstat-num">${edu.length}</div>
+        <div class="pstat-label">Education</div>
+      </div>
+      <div class="pstat">
+        <div class="pstat-num">${health.length}</div>
+        <div class="pstat-label">Health</div>
+      </div>
+      <div class="pstat">
+        <div class="pstat-num">${other.length}</div>
+        <div class="pstat-label">Other</div>
+      </div>
+    </div>
+    <div class="schemes-wrap">${schemesHTML}</div>
+  `;
+
+  panel.classList.add('active');
+  // Scroll to panel on mobile
+  if (window.innerWidth <= 1024) {
+    panel.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+}
+
+function buildSection(title, schemes, color) {
+  const cards = schemes.map(s => `
+    <div class="scheme-card">
+      <div class="scheme-card-title">${s.title}</div>
+      <div class="scheme-card-benefit">${s.benefit}</div>
+      <div class="scheme-card-desc">${s.desc}</div>
+    </div>
+  `).join('');
+  return `<div class="scheme-section-title" style="color:${color}">${title}</div>${cards}`;
+}
+
+function closePanel() {
+  document.getElementById('stateInfoPanel').classList.remove('active');
+  document.querySelectorAll('.state-path').forEach(p => p.classList.remove('selected', 'dim'));
+  document.querySelectorAll('.state-btn').forEach(b => b.classList.remove('selected'));
+  document.getElementById('mapHintText').textContent = 'Click on any highlighted state to view its welfare schemes';
+  currentState = null;
+}
+
+// ─── STATE BUTTON GRID ────────────────────────────────────────────────────────
+function buildStateGrid() {
+  const grid = document.getElementById('stateButtonGrid');
+  grid.innerHTML = Object.entries(stateData).map(([id, s]) => `
+    <button class="state-btn" data-id="${id}" onclick="selectState('${id}')">
+      <span>${s.emoji}</span>
+      <span>${s.name.split(' ').slice(0,2).join(' ')}</span>
+    </button>
+  `).join('');
+}
+
+let gridOpen = false;
+function toggleStateGrid() {
+  gridOpen = !gridOpen;
+  const wrap = document.getElementById('stateButtonsWrap');
+  const btn = document.getElementById('toggleGridBtn');
+  if (gridOpen) {
+    wrap.classList.add('open');
+    btn.classList.add('active');
+    btn.textContent = 'Hide States ↑';
+  } else {
+    wrap.classList.remove('open');
+    btn.classList.remove('active');
+    btn.textContent = 'Show All States ↓';
+  }
+}
+
+// Keyboard support
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') closePanel();
+});
+
+// Init
+buildStateGrid();
+</script>
+</body>
+</html>

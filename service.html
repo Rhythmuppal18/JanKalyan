@@ -1,0 +1,138 @@
+<!--
+  ╔══════════════════════════════════════════════════════════════════════╗
+  ║  ESSENTIAL SERVICES PAGE / आवश्यक सेवाएं पृष्ठ                       ║
+  ║  PURPOSE: Display employment, ration, utilities & welfare schemes   ║
+  ║  मकसद: रोजगार, राशन, बिजली, पानी और अन्य सेवाएं दिखाना           ║
+  ║                                                                      ║
+  ║  SCHEMES INCLUDED:                                                   ║
+  ║  - MGNREGA (employment - रोजगार)                                   ║
+  ║  - Food security / Ration (राशन)                                   ║
+  ║  - LPG subsidy (रसोई गैस - PMUY)                                  ║
+  ║  - Electricity connection (बिजली - Saubhagya)                      ║
+  ║  - Water connection (पानी - Jal Jeevan Mission)                    ║
+  ║  - Farmer support (किसान सहायता)                                   ║
+  ║  - Pension schemes (पेंशन)                                         ║
+  ║                                                                      ║
+  ║  DATA: service.js file contains all service schemes                  ║
+  ╚══════════════════════════════════════════════════════════════════════╝
+-->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Essential Services – JanKalyan</title>
+  <link rel="icon" type="image/x-icon" href="favicon.ico">
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <!-- Flag tricolor bar -->
+  <div class="tricolor-bar"></div>
+  
+  <!-- Main navigation -->
+  <nav class="navbar">
+    <a href="index.html" class="nav-brand">
+      <div class="nav-emblem">🏛️</div>
+      <div class="nav-title">JANKALYAN<span>Transforming Awareness into Access.</span></div>
+    </a>
+    <!-- Mobile hamburger menu -->
+    <div class="hamburger" onclick="toggleMenu()"><span></span><span></span><span></span></div>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="about.html">About</a></li>
+      <li><a href="eligibility.html">Eligibility</a></li>
+      <li><a href="schemes-by-state.html">State Schemes</a></li>
+      <li><a href="login.html">Login</a></li>
+      <li><a href="donate.html" class="btn-nav">Donate</a></li>
+    </ul>
+  </nav>
+
+  <!-- Page title section -->
+  <section class="page-hero">
+    <div class="page-hero-content">
+      <div class="hero-badge">Category: Services</div>
+      <h1>⚙️ Essential Services Schemes</h1>
+      <p>Employment, ration, electricity, water, and social security programmes for every Indian household.</p>
+    </div>
+  </section>
+
+  <!-- Services display section -->
+  <section class="schemes-section">
+    <span class="section-label">Government Schemes</span>
+    <h2 class="section-title">Available Service Schemes</h2>
+    <p class="section-sub">Access a wide range of essential service programmes covering employment, food security, utilities, and social security.</p>
+    <!-- Schemes grid filled by JavaScript from service.js -->
+    <div class="schemes-grid" id="schemesGrid"><p style="color:var(--mid-gray);">Loading schemes...</p></div>
+  </section>
+
+  <footer class="footer">
+    <div class="footer-inner">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <div class="nav-brand"><div class="nav-emblem">🏛️</div><div class="nav-title" style="color:white;">JANKALYAN<span>Transforming Awareness into Access.</span></div></div>
+          <p>Empowering every citizen through access to information and government welfare schemes.</p>
+        </div>
+        <div class="footer-col"><h4>Schemes</h4><a href="student.html">Student</a><a href="health.html">Health</a><a href="housing.html">Housing</a><a href="service.html">Services</a></div>
+        <div class="footer-col"><h4>Portal</h4><a href="about.html">About</a><a href="eligibility.html">Eligibility</a><a href="donate.html">Donate</a></div>
+        <div class="footer-col"><h4>Help</h4><a href="#">FAQ</a><a href="#">Contact</a><a href="#">Grievance</a></div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2025 JanKalyan, India. All rights reserved.</p>
+        <div class="footer-flag">
+          <div class="flag-stripe" style="background:var(--saffron);border-radius:2px 0 0 2px;"></div>
+          <div class="flag-stripe" style="background:var(--white);"></div>
+          <div class="flag-stripe" style="background:var(--green);border-radius:0 2px 2px 0;"></div>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="service.js"></script>
+  <script>function toggleMenu(){document.getElementById('navLinks').classList.toggle('open');}</script>
+
+<!-- Scheme Detail Modal -->
+<div id="scheme-modal">
+  <div class="modal-box">
+    <div class="modal-header">
+      <div class="modal-tag-pill" id="modal-tag"></div>
+      <h2 id="modal-title"></h2>
+      <button class="modal-close" onclick="closeModal()">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="modal-row">
+        <div class="modal-info-pill">
+          <div class="pill-label">Key Benefit</div>
+          <div class="pill-value" id="modal-benefit"></div>
+        </div>
+        <div class="modal-info-pill">
+          <div class="pill-label">Income Limit</div>
+          <div class="pill-value" id="modal-income"></div>
+        </div>
+      </div>
+      <div class="modal-info-pill" style="margin-bottom:1.1rem;">
+        <div class="pill-label">Administered By</div>
+        <div class="pill-value" id="modal-ministry"></div>
+      </div>
+      <hr class="modal-divider"/>
+      <div class="modal-section">
+        <div class="modal-section-label">Eligibility</div>
+        <p id="modal-eligibility"></p>
+      </div>
+      <div class="modal-section">
+        <div class="modal-section-label">Required Documents</div>
+        <ul id="modal-docs"></ul>
+      </div>
+      <div class="modal-section">
+        <div class="modal-section-label">How to Apply</div>
+        <p id="modal-how"></p>
+      </div>
+      <hr class="modal-divider"/>
+      <a id="modal-apply-btn" class="modal-apply-btn" href="#" target="_blank" rel="noopener">
+        Apply on Official Portal →
+      </a>
+    </div>
+  </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,178 @@
+<!--
+  ╔══════════════════════════════════════════════════════════════════════╗
+  ║  STUDENT SCHEMES PAGE / छात्र योजनाएं पृष्ठ                           ║
+  ║  PURPOSE: Display all education and scholarship schemes             ║
+  ║  मकसद: सभी शिक्षा और छात्रवृत्ति योजनाओं को दिखाना                ║
+  ║                                                                      ║
+  ║  CONTENT:                                                            ║
+  ║  - Navigation bar (top menu)                                         ║
+  ║  - Page hero section (big title with category badge)                 ║
+  ║  - Schemes grid (list of all schemes from student.js)                ║
+  ║  - Footer (links और contact info)                                   ║
+  ║                                                                      ║
+  ║  DATA SOURCE: student.js (JavaScript array में schemes हैं)         ║
+  ║  HOW IT WORKS: JS file से schemes निकाल कर cards में दिखाते हैं      ║
+  ╚══════════════════════════════════════════════════════════════════════╝
+-->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- Meta tags - page information -->
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Student Welfare Schemes - JanKalyan</title>
+  <link rel="icon" type="image/x-icon" href="favicon.ico">
+  <!-- Link करता है style.css से - सभी styling यहाँ से आती है -->
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- Tricolor bar - भारतीय flag का तिरंगा -->
+  <div class="tricolor-bar"></div>
+
+  <!-- Navigation bar - top menu for navigation -->
+  <nav class="navbar">
+    <a href="index.html" class="nav-brand">
+      <div class="nav-emblem">🏛️</div>
+      <div class="nav-title">
+        JANKALYAN
+        <span>Transforming Awareness into Access.</span>
+      </div>
+    </a>
+    <!-- Hamburger menu for mobile devices -->
+    <div class="hamburger" onclick="toggleMenu()"><span></span><span></span><span></span></div>
+    <!-- Navigation links -->
+    <ul class="nav-links" id="navLinks">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="about.html">About</a></li>
+      <li><a href="eligibility.html">Eligibility</a></li>
+      <li><a href="schemes-by-state.html">State Schemes</a></li>
+      <li><a href="login.html">Login</a></li>
+      <li><a href="donate.html" class="btn-nav">Donate</a></li>
+    </ul>
+  </nav>
+
+  <!-- Page Hero Section - बड़ा title वाला section -->
+  <section class="page-hero">
+    <div class="page-hero-content">
+      <div class="hero-badge">Category: Education</div>
+      <!-- Main heading -->
+      <h1>🎓 Student Welfare Schemes</h1>
+      <!-- Description -->
+      <p>Scholarships, fellowships, and education support programmes for students across India.</p>
+    </div>
+  </section>
+
+  <!-- Schemes Display Section - यहाँ सभी schemes दिखते हैं -->
+  <section class="schemes-section">
+    <span class="section-label">Government Schemes</span>
+    <h2 class="section-title">Available Student Schemes</h2>
+    <p class="section-sub">Browse all central and state government schemes designed to support students at every stage of education.</p>
+
+    <!-- This div gets filled by JavaScript from student.js -->
+    <!-- JavaScript इस div में scheme cards डालता है -->
+    <div class="schemes-grid" id="schemesGrid">
+      <p style="color:var(--mid-gray);font-size:0.9rem;">Loading schemes...</p>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer-inner">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <div class="nav-brand">
+            <div class="nav-emblem">🏛️</div>
+            <div class="nav-title" style="color:white;">
+              JANKALYAN
+              <span>Transforming Awareness into Access.</span>
+            </div>
+          </div>
+          <p>A centralised digital platform connecting citizens to government welfare schemes across India.</p>
+        </div>
+        <div class="footer-col">
+          <h4>Schemes</h4>
+          <a href="student.html">Student Welfare</a>
+          <a href="health.html">Health Schemes</a>
+          <a href="housing.html">Housing Schemes</a>
+          <a href="service.html">Essential Services</a>
+        </div>
+        <div class="footer-col">
+          <h4>Portal</h4>
+          <a href="about.html">About Us</a>
+          <a href="eligibility.html">Eligibility</a>
+          <a href="donate.html">Donate</a>
+        </div>
+        <div class="footer-col">
+          <h4>Help</h4>
+          <a href="#">FAQ</a>
+          <a href="#">Contact Us</a>
+          <a href="#">Grievance Portal</a>
+          <a href="#">RTI</a>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2025 JanKalyan, India. All rights reserved.</p>
+        <div class="footer-flag">
+          <div class="flag-stripe" style="background:var(--saffron);border-radius:2px 0 0 2px;"></div>
+          <div class="flag-stripe" style="background:var(--white);"></div>
+          <div class="flag-stripe" style="background:var(--green);border-radius:0 2px 2px 0;"></div>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="student.js"></script>
+  <script>
+    function toggleMenu() {
+      document.getElementById('navLinks').classList.toggle('open');
+    }
+  </script>
+
+
+<!-- Scheme Detail Modal -->
+<div id="scheme-modal">
+  <div class="modal-box">
+    <div class="modal-header">
+      <div class="modal-tag-pill" id="modal-tag"></div>
+      <h2 id="modal-title"></h2>
+      <button class="modal-close" onclick="closeModal()">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="modal-row">
+        <div class="modal-info-pill">
+          <div class="pill-label">Key Benefit</div>
+          <div class="pill-value" id="modal-benefit"></div>
+        </div>
+        <div class="modal-info-pill">
+          <div class="pill-label">Income Limit</div>
+          <div class="pill-value" id="modal-income"></div>
+        </div>
+      </div>
+      <div class="modal-info-pill" style="margin-bottom:1.1rem;">
+        <div class="pill-label">Administered By</div>
+        <div class="pill-value" id="modal-ministry"></div>
+      </div>
+      <hr class="modal-divider"/>
+      <div class="modal-section">
+        <div class="modal-section-label">Eligibility</div>
+        <p id="modal-eligibility"></p>
+      </div>
+      <div class="modal-section">
+        <div class="modal-section-label">Required Documents</div>
+        <ul id="modal-docs"></ul>
+      </div>
+      <div class="modal-section">
+        <div class="modal-section-label">How to Apply</div>
+        <p id="modal-how"></p>
+      </div>
+      <hr class="modal-divider"/>
+      <a id="modal-apply-btn" class="modal-apply-btn" href="#" target="_blank" rel="noopener">
+        Apply on Official Portal →
+      </a>
+    </div>
+  </div>
+</div>
+</body>
+</html>

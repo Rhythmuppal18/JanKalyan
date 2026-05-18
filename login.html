@@ -1,0 +1,954 @@
+<!--
+  ╔══════════════════════════════════════════════════════════════════════╗
+  ║  LOGIN PAGE / लॉगिन पेज                                              ║
+  ║  PURPOSE: Allow different user types to login to JANKALYAN           ║
+  ║  मकसद: विभिन्न प्रकार के users को login करने देना                 ║
+  ║                                                                      ║
+  ║  USER TYPES:                                                         ║
+  ║  1. Individual Citizen - नागरिक (आम जनता)                          ║
+  ║  2. CSC Operator - Common Service Centre चलाने वाला                   ║
+  ║  3. NGO/Organization - गैर-लाभकारी संगठन                             ║
+  ║  4. Government Official - सरकारी कर्मचारी                            ║
+  ║                                                                      ║
+  ║  LAYOUT: Left (branding) + Right (form)                              ║
+  ║  DATA: User info saved in browser localStorage                       ║
+  ╚══════════════════════════════════════════════════════════════════════╝
+-->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- Meta tags -->
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>JANKALYAN — Sign In</title>
+  <link rel="icon" type="image/x-icon" href="favicon.ico">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,700;0,900;1,400&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --navy: #001429;
+      --navy2: #0a2540;
+      --blue: #0d47a1;
+      --saffron: #FF9933;
+      --saffron2: #e8851c;
+      --green: #138808;
+      --white: #ffffff;
+      --gray: #f0f4f8;
+      --text: #1a2332;
+      --muted: #64748b;
+    }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--navy);
+      min-height: 100vh;
+      display: flex;
+      overflow: auto;
+    }
+
+    /* ─── LEFT PANEL ─────────────────────────────────── */
+    .left-panel {
+      width: 50%;
+      min-height: 100vh;
+      background: linear-gradient(160deg, var(--navy) 0%, var(--navy2) 40%, #0a3060 100%);
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 3rem;
+      overflow: hidden;
+      flex-shrink: 0;
+    }
+
+    /* Animated grid */
+    .grid-bg {
+      position: absolute; inset: 0;
+      background-image:
+        linear-gradient(rgba(255,255,255,0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.04) 1px, transparent 1px);
+      background-size: 60px 60px;
+      animation: gridPan 20s linear infinite;
+    }
+    @keyframes gridPan {
+      from { background-position: 0 0; }
+      to { background-position: 60px 60px; }
+    }
+
+    /* Floating glows */
+    .glow {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(90px);
+      pointer-events: none;
+    }
+    .glow-1 {
+      width: 350px; height: 350px;
+      background: rgba(255, 153, 51, 0.12);
+      top: -80px; left: -80px;
+      animation: floatA 15s ease-in-out infinite;
+    }
+    .glow-2 {
+      width: 280px; height: 280px;
+      background: rgba(13, 71, 161, 0.25);
+      bottom: 60px; right: -60px;
+      animation: floatB 18s ease-in-out infinite;
+    }
+    .glow-3 {
+      width: 200px; height: 200px;
+      background: rgba(19, 136, 8, 0.12);
+      bottom: 40%; left: 30%;
+      animation: floatC 12s ease-in-out infinite;
+    }
+    @keyframes floatA {
+      0%,100% { transform: translate(0,0); }
+      50% { transform: translate(40px, 50px); }
+    }
+    @keyframes floatB {
+      0%,100% { transform: translate(0,0); }
+      50% { transform: translate(-30px, -40px); }
+    }
+    @keyframes floatC {
+      0%,100% { transform: translate(0,0); }
+      33% { transform: translate(20px, -20px); }
+      66% { transform: translate(-15px, 25px); }
+    }
+
+    .left-top { position: relative; z-index: 2; }
+    .left-mid { position: relative; z-index: 2; flex: 1; display: flex; flex-direction: column; justify-content: center; }
+    .left-bot { position: relative; z-index: 2; }
+
+    /* Brand mark */
+    .brand {
+      display: flex; align-items: center; gap: 0.75rem;
+    }
+    .brand-icon {
+      width: 44px; height: 44px;
+      background: var(--saffron);
+      border-radius: 12px;
+      display: grid; place-items: center;
+      box-shadow: 0 4px 20px rgba(255,153,51,0.4);
+    }
+    .brand-name {
+      font-family: 'Fraunces', serif;
+      color: white; font-size: 1.2rem; font-weight: 700;
+      line-height: 1.1;
+    }
+    .brand-sub { color: rgba(255,255,255,0.45); font-size: 0.7rem; font-weight: 400; }
+
+    /* Hero text */
+    .hero-tag {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      background: rgba(255,153,51,0.12);
+      border: 1px solid rgba(255,153,51,0.3);
+      color: var(--saffron);
+      font-size: 0.72rem; font-weight: 700;
+      padding: 0.35rem 0.9rem; border-radius: 100px;
+      margin-bottom: 1.5rem; letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+    .hero-tag::before {
+      content: ''; width: 6px; height: 6px;
+      background: var(--saffron); border-radius: 50%;
+      animation: pulse 2s ease-in-out infinite;
+    }
+    @keyframes pulse {
+      0%,100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.5; transform: scale(0.7); }
+    }
+
+    .left-title {
+      font-family: 'Fraunces', serif;
+      font-size: clamp(2rem, 3.5vw, 3rem);
+      color: white; font-weight: 900;
+      line-height: 1.1; margin-bottom: 1rem;
+    }
+    .left-title em { color: var(--saffron); font-style: italic; }
+
+    .left-desc {
+      color: rgba(255,255,255,0.55);
+      font-size: 0.9rem; line-height: 1.7;
+      max-width: 380px; margin-bottom: 2.5rem;
+    }
+
+    /* Stat pills */
+    .stat-pills {
+      display: flex; gap: 0.75rem; flex-wrap: wrap;
+    }
+    .stat-pill {
+      display: flex; align-items: center; gap: 0.5rem;
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 100px;
+      padding: 0.4rem 0.9rem;
+      color: rgba(255,255,255,0.8);
+      font-size: 0.8rem; font-weight: 600;
+      backdrop-filter: blur(4px);
+    }
+    .stat-pill-icon { font-size: 1rem; }
+
+    /* Tricolor strip at bottom */
+    .tricolor-strip {
+      display: flex; height: 5px; border-radius: 3px; overflow: hidden;
+      margin-bottom: 1.5rem;
+    }
+    .tc-seg { flex: 1; }
+
+    .trust-text {
+      color: rgba(255,255,255,0.35);
+      font-size: 0.75rem; line-height: 1.5;
+    }
+    .trust-text span { color: rgba(255,255,255,0.5); }
+
+    /* ─── RIGHT PANEL ────────────────────────────────── */
+    .right-panel {
+      flex: 1;
+      background: var(--gray);
+      display: flex; align-items: center; justify-content: center;
+      padding: 2rem;
+      position: relative;
+      overflow-y: auto;
+      min-height: 100vh;
+    }
+
+    /* Subtle right bg */
+    .right-panel::before {
+      content: '';
+      position: absolute; inset: 0;
+      background:
+        radial-gradient(ellipse at 100% 0%, rgba(13,71,161,0.06) 0%, transparent 50%),
+        radial-gradient(ellipse at 0% 100%, rgba(255,153,51,0.04) 0%, transparent 50%);
+    }
+
+    .form-card {
+      width: 100%; max-width: 440px;
+      background: white;
+      border-radius: 24px;
+      padding: 2.75rem;
+      box-shadow:
+        0 4px 6px rgba(0,0,0,0.04),
+        0 20px 60px rgba(0,31,63,0.10),
+        0 0 0 1px rgba(0,0,0,0.04);
+      position: relative; z-index: 1;
+      animation: cardIn 0.5s cubic-bezier(0.34,1.56,0.64,1) forwards;
+      margin: auto 0;
+    }
+    @keyframes cardIn {
+      from { opacity: 0; transform: translateY(24px) scale(0.98); }
+      to { opacity: 1; transform: translateY(0) scale(1); }
+    }
+
+    /* Card header */
+    .form-header { margin-bottom: 2rem; }
+    .form-header-back {
+      display: inline-flex; align-items: center; gap: 0.4rem;
+      color: var(--muted); font-size: 0.8rem; font-weight: 500;
+      text-decoration: none; margin-bottom: 1.5rem;
+      transition: color 0.2s;
+    }
+    .form-header-back:hover { color: var(--blue); }
+
+    .form-h1 {
+      font-family: 'Fraunces', serif;
+      font-size: 1.75rem; color: var(--text); font-weight: 900;
+      line-height: 1.15; margin-bottom: 0.4rem;
+    }
+    .form-h1 em { color: var(--saffron); font-style: italic; }
+    .form-sub { color: var(--muted); font-size: 0.875rem; }
+
+    /* Secure badge */
+    .secure-badge {
+      display: flex; align-items: center; gap: 0.5rem;
+      background: #f0fdf4; border: 1px solid #bbf7d0;
+      border-radius: 8px; padding: 0.5rem 0.9rem;
+      margin-bottom: 1.75rem;
+      font-size: 0.78rem; color: #15803d; font-weight: 600;
+    }
+
+    /* Auth method tabs */
+    .method-tabs {
+      display: grid; grid-template-columns: repeat(3, 1fr);
+      gap: 0.4rem; margin-bottom: 1.5rem;
+      background: #f0f4f8; border-radius: 12px; padding: 0.3rem;
+    }
+    .method-tab {
+      padding: 0.55rem 0.25rem;
+      border: none; background: transparent;
+      border-radius: 9px; cursor: pointer;
+      font-size: 0.78rem; font-weight: 600;
+      color: var(--muted); transition: all 0.2s;
+      display: flex; align-items: center; justify-content: center; gap: 0.3rem;
+    }
+    .method-tab.active {
+      background: white; color: var(--navy);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+
+    /* Form groups */
+    .form-group { margin-bottom: 1.1rem; }
+    label {
+      display: block; font-size: 0.8rem; font-weight: 600;
+      color: #374151; margin-bottom: 0.4rem; letter-spacing: 0.01em;
+    }
+    .input-wrap { position: relative; }
+    .input-icon {
+      position: absolute; left: 13px; top: 50%; transform: translateY(-50%);
+      font-size: 0.95rem; pointer-events: none; opacity: 0.5;
+    }
+    input[type="text"], input[type="email"], input[type="password"], select {
+      width: 100%;
+      padding: 0.75rem 0.875rem 0.75rem 2.5rem;
+      border: 1.5px solid #e2e8f0;
+      border-radius: 10px;
+      font-size: 0.9rem; font-family: 'DM Sans', sans-serif;
+      color: var(--text); background: #fafbfc;
+      transition: all 0.2s; outline: none;
+    }
+    input:focus, select:focus {
+      border-color: var(--blue);
+      background: white;
+      box-shadow: 0 0 0 3px rgba(13,71,161,0.08);
+    }
+    input.error { border-color: #ef4444; }
+    input.valid { border-color: #22c55e; }
+
+    .pwd-toggle {
+      position: absolute; right: 13px; top: 50%; transform: translateY(-50%);
+      background: none; border: none; cursor: pointer;
+      font-size: 0.85rem; color: var(--muted);
+      padding: 4px; border-radius: 4px; transition: color 0.2s;
+    }
+    .pwd-toggle:hover { color: var(--navy); }
+
+    .field-hint {
+      font-size: 0.72rem; color: var(--muted);
+      margin-top: 0.3rem;
+    }
+    .field-error {
+      font-size: 0.72rem; color: #ef4444;
+      margin-top: 0.3rem; display: none;
+    }
+
+    /* User type selector — styled cards */
+    .user-type-grid {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 0.4rem; margin-bottom: 1.1rem;
+    }
+    .user-type-btn {
+      padding: 0.65rem 0.5rem;
+      border: 1.5px solid #e2e8f0; border-radius: 10px;
+      background: #fafbfc; cursor: pointer;
+      font-size: 0.78rem; font-weight: 600; color: var(--muted);
+      text-align: center; transition: all 0.2s; line-height: 1.3;
+    }
+    .user-type-btn .ut-icon { font-size: 1.2rem; display: block; margin-bottom: 0.2rem; }
+    .user-type-btn:hover { border-color: var(--blue); color: var(--blue); background: #eff6ff; }
+    .user-type-btn.selected {
+      border-color: var(--saffron); background: #fff7ed; color: #9a3412;
+      box-shadow: 0 0 0 3px rgba(255,153,51,0.12);
+    }
+
+    /* Row layout */
+    .row { display: flex; gap: 0.75rem; }
+    .row .form-group { flex: 1; }
+
+    /* Checkbox row */
+    .check-row {
+      display: flex; align-items: center; justify-content: space-between;
+      margin-bottom: 1.5rem; margin-top: 0.25rem;
+    }
+    .check-label {
+      display: flex; align-items: center; gap: 0.5rem;
+      font-size: 0.82rem; color: var(--muted); cursor: pointer;
+    }
+    .check-label input[type="checkbox"] { accent-color: var(--blue); width: 14px; height: 14px; }
+    .forgot-link {
+      font-size: 0.82rem; color: var(--blue); font-weight: 600;
+      text-decoration: none;
+    }
+    .forgot-link:hover { text-decoration: underline; }
+
+    /* Submit button */
+    .submit-btn {
+      width: 100%;
+      padding: 0.9rem;
+      background: linear-gradient(135deg, var(--navy), var(--blue));
+      color: white; border: none; border-radius: 12px;
+      font-size: 0.95rem; font-weight: 700;
+      cursor: pointer; transition: all 0.2s;
+      position: relative; overflow: hidden;
+      letter-spacing: 0.02em;
+    }
+    .submit-btn::after {
+      content: '';
+      position: absolute; inset: 0;
+      background: linear-gradient(135deg, rgba(255,255,255,0.1), transparent);
+      opacity: 0; transition: opacity 0.2s;
+    }
+    .submit-btn:hover { transform: translateY(-1px); box-shadow: 0 8px 24px rgba(13,71,161,0.35); }
+    .submit-btn:hover::after { opacity: 1; }
+    .submit-btn:active { transform: translateY(0); }
+    .submit-btn.loading { pointer-events: none; opacity: 0.8; }
+
+    /* Loading spinner */
+    .btn-spinner {
+      display: none;
+      width: 18px; height: 18px;
+      border: 2px solid rgba(255,255,255,0.3);
+      border-top-color: white;
+      border-radius: 50%;
+      animation: spin 0.6s linear infinite;
+      margin: 0 auto;
+    }
+    .btn-text { transition: opacity 0.2s; }
+    .submit-btn.loading .btn-text { opacity: 0; position: absolute; }
+    .submit-btn.loading .btn-spinner { display: block; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* Divider */
+    .divider {
+      display: flex; align-items: center; gap: 1rem;
+      margin: 1.25rem 0;
+    }
+    .divider::before, .divider::after {
+      content: ''; flex: 1; height: 1px; background: #e8edf3;
+    }
+    .divider span { font-size: 0.78rem; color: var(--muted); font-weight: 600; white-space: nowrap; }
+
+    /* Social login */
+    .social-row { display: flex; gap: 0.5rem; margin-bottom: 1.5rem; }
+    .social-btn {
+      flex: 1; padding: 0.65rem 0.5rem;
+      border: 1.5px solid #e2e8f0; border-radius: 10px;
+      background: white; cursor: pointer;
+      font-size: 0.78rem; font-weight: 600; color: var(--text);
+      display: flex; align-items: center; justify-content: center; gap: 0.4rem;
+      transition: all 0.2s;
+    }
+    .social-btn:hover { border-color: var(--navy); background: #f8fafc; }
+
+    /* OTP flow */
+    .otp-row { display: flex; gap: 0.5rem; }
+    .otp-row input {
+      flex: 1; text-align: center; font-size: 1.2rem; font-weight: 700;
+      padding: 0.75rem 0.25rem;
+      letter-spacing: 0.1em;
+    }
+    .otp-send-btn {
+      padding: 0.75rem 1rem; border: 1.5px solid var(--blue);
+      background: transparent; border-radius: 10px; color: var(--blue);
+      font-size: 0.8rem; font-weight: 600; cursor: pointer; white-space: nowrap;
+      transition: all 0.2s;
+    }
+    .otp-send-btn:hover { background: var(--blue); color: white; }
+
+    /* Footer / signup link */
+    .form-footer {
+      text-align: center;
+      font-size: 0.82rem; color: var(--muted);
+    }
+    .form-footer a { color: var(--blue); font-weight: 700; text-decoration: none; }
+    .form-footer a:hover { text-decoration: underline; }
+
+    /* Step indicator */
+    .step-indicator {
+      display: flex; align-items: center; gap: 0.5rem;
+      margin-bottom: 2rem;
+    }
+    .step-dot {
+      width: 8px; height: 8px; border-radius: 50%;
+      background: #e2e8f0; transition: all 0.3s;
+    }
+    .step-dot.active { background: var(--blue); width: 24px; border-radius: 4px; }
+    .step-dot.done { background: #22c55e; }
+    .step-label { font-size: 0.72rem; color: var(--muted); margin-left: 0.25rem; font-weight: 600; }
+
+    /* Success state */
+    .success-card {
+      text-align: center; padding: 1rem;
+      display: none;
+    }
+    .success-icon {
+      width: 72px; height: 72px;
+      background: #f0fdf4; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      margin: 0 auto 1.25rem;
+      font-size: 2rem;
+      animation: popIn 0.4s cubic-bezier(0.34,1.56,0.64,1);
+    }
+    @keyframes popIn {
+      from { transform: scale(0); }
+      to { transform: scale(1); }
+    }
+    .success-card h2 {
+      font-family: 'Fraunces', serif;
+      font-size: 1.5rem; color: var(--text); margin-bottom: 0.5rem;
+    }
+    .success-card p { color: var(--muted); font-size: 0.875rem; line-height: 1.6; }
+
+    /* Error flash */
+    .error-flash {
+      background: #fef2f2; border: 1px solid #fecaca;
+      border-radius: 10px; padding: 0.75rem 1rem;
+      font-size: 0.82rem; color: #dc2626; font-weight: 500;
+      margin-bottom: 1.25rem; display: none;
+      animation: shake 0.4s ease;
+    }
+    @keyframes shake {
+      0%,100% { transform: translateX(0); }
+      25% { transform: translateX(-8px); }
+      75% { transform: translateX(8px); }
+    }
+
+    /* ─── RESPONSIVE ─────────────────────────────────── */
+    @media (max-width: 1024px) {
+      body { flex-direction: column; overflow: auto; }
+      .left-panel { width: 100%; min-height: auto; padding: 2rem; }
+      .left-title { font-size: 1.8rem; }
+      .left-desc { max-width: 100%; display: block; }
+      .right-panel { padding: 2rem 1rem; min-height: auto; }
+      .form-card { padding: 2rem 1.5rem; margin: 0; }
+    }
+
+    @media (max-width: 768px) {
+      .left-panel { padding: 1.5rem; }
+      .left-top { margin-bottom: 1.5rem; }
+      .left-mid { justify-content: flex-start; margin: 1rem 0; }
+      .left-bot { margin-top: 1.5rem; }
+      .left-title { font-size: 1.5rem; }
+      .left-desc { font-size: 0.85rem; }
+      .stat-pills { gap: 0.5rem; }
+      .stat-pill { padding: 0.3rem 0.7rem; font-size: 0.75rem; }
+      .right-panel { padding: 1.5rem 1rem; }
+      .form-card { padding: 1.5rem; max-width: 100%; }
+      .form-h1 { font-size: 1.5rem; }
+      .method-tabs { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- LEFT PANEL -->
+<div class="left-panel">
+  <div class="grid-bg"></div>
+  <div class="glow glow-1"></div>
+  <div class="glow glow-2"></div>
+  <div class="glow glow-3"></div>
+
+  <div class="left-top">
+    <div class="brand">
+      <div class="brand-icon">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+          <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+      <div>
+        <div class="brand-name">JANKALYAN</div>
+        <div class="brand-sub">Citizen Welfare Portal</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="left-mid">
+    <div class="hero-tag">Govt. Verified Portal</div>
+    <h1 class="left-title">
+      Every scheme,<br>
+      <em>every citizen.</em>
+    </h1>
+    <p class="left-desc">
+      India's most comprehensive welfare portal — 480+ active government schemes, verified and accessible to 1.4 billion citizens.
+    </p>
+    <div class="stat-pills">
+      <div class="stat-pill"><span class="stat-pill-icon">🎓</span> 120+ Education</div>
+      <div class="stat-pill"><span class="stat-pill-icon">🏥</span> 80+ Health</div>
+      <div class="stat-pill"><span class="stat-pill-icon">🏠</span> 60+ Housing</div>
+      <div class="stat-pill"><span class="stat-pill-icon">🗺️</span> 28 States</div>
+    </div>
+  </div>
+
+  <div class="left-bot">
+    <div class="tricolor-strip">
+      <div class="tc-seg" style="background:#FF9933;"></div>
+      <div class="tc-seg" style="background:#ffffff;"></div>
+      <div class="tc-seg" style="background:#138808;"></div>
+    </div>
+    <p class="trust-text">
+      Secured by <span>CERT-In</span> standards · Aadhaar verified ·
+      <span>Not an official government website</span> — informational portal only
+    </p>
+  </div>
+</div>
+
+<!-- RIGHT PANEL -->
+<div class="right-panel">
+  <div class="form-card">
+
+    <!-- Step indicator -->
+    <div class="step-indicator">
+      <div class="step-dot active" id="step1"></div>
+      <div class="step-dot" id="step2"></div>
+      <div class="step-dot" id="step3"></div>
+      <span class="step-label" id="stepLabel">Choose login method</span>
+    </div>
+
+    <div class="form-header">
+      <a href="index.html" class="form-header-back">← Back to home</a>
+      <h1 class="form-h1">Welcome <em>back.</em></h1>
+      <p class="form-sub">Sign in to access your government schemes and services</p>
+    </div>
+
+    <div class="secure-badge">
+      🔒 &nbsp;Secure · Government-grade encryption · Data protected
+    </div>
+
+    <div id="errorFlash" class="error-flash"></div>
+
+    <!-- Login method tabs -->
+    <div class="method-tabs">
+      <button class="method-tab active" onclick="switchMethod('aadhaar', this)" id="tab-aadhaar">
+        🆔 Aadhaar
+      </button>
+      <button class="method-tab" onclick="switchMethod('email', this)" id="tab-email">
+        📧 Email
+      </button>
+      <button class="method-tab" onclick="switchMethod('otp', this)" id="tab-otp">
+        📱 OTP
+      </button>
+    </div>
+
+    <form id="loginForm" novalidate>
+
+      <!-- AADHAAR METHOD -->
+      <div id="method-aadhaar" class="method-section">
+        <div class="form-group">
+          <label for="aadhaarInput">Aadhaar Number</label>
+          <div class="input-wrap">
+            <span class="input-icon">🆔</span>
+            <input type="text" id="aadhaarInput" placeholder="XXXX XXXX XXXX" maxlength="14" autocomplete="off">
+          </div>
+          <div class="field-hint">Your 12-digit Aadhaar number</div>
+          <div class="field-error" id="aadhaar-err">Please enter a valid 12-digit Aadhaar number</div>
+        </div>
+        <div class="form-group">
+          <label for="pwdAadhaar">Password / PIN</label>
+          <div class="input-wrap">
+            <span class="input-icon">🔑</span>
+            <input type="password" id="pwdAadhaar" placeholder="Enter your password">
+            <button type="button" class="pwd-toggle" onclick="togglePwd('pwdAadhaar', this)">👁</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- EMAIL METHOD -->
+      <div id="method-email" class="method-section" style="display:none">
+        <div class="form-group">
+          <label for="emailInput">Email Address</label>
+          <div class="input-wrap">
+            <span class="input-icon">📧</span>
+            <input type="email" id="emailInput" placeholder="your@email.com">
+          </div>
+          <div class="field-error" id="email-err">Please enter a valid email address</div>
+        </div>
+        <div class="form-group">
+          <label for="pwdEmail">Password</label>
+          <div class="input-wrap">
+            <span class="input-icon">🔑</span>
+            <input type="password" id="pwdEmail" placeholder="Enter your password">
+            <button type="button" class="pwd-toggle" onclick="togglePwd('pwdEmail', this)">👁</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- OTP METHOD -->
+      <div id="method-otp" class="method-section" style="display:none">
+        <div class="form-group">
+          <label for="phoneInput">Mobile Number</label>
+          <div class="input-wrap" style="display:flex; gap:0.5rem; align-items:center;">
+            <span class="input-icon" style="position:static; padding: 0 0.5rem; opacity:0.7; font-size:0.85rem;">+91</span>
+            <input type="tel" id="phoneInput" placeholder="9XXXXXXXXX" maxlength="10" inputmode="numeric" pattern="[0-9]{10}" oninput="this.value = this.value.replace(/[^0-9]/g, '')" style="padding-left:0.75rem; border-radius:10px;">
+            <button type="button" class="otp-send-btn" onclick="sendOTP()">Send OTP</button>
+          </div>
+          <div class="field-hint">10-digit mobile number starting with 6, 7, 8, or 9</div>
+          <div class="field-error" id="phone-err">Please enter a valid 10-digit mobile number starting with 6, 7, 8, or 9</div>
+        </div>
+        <div class="form-group" id="otpGroup" style="display:none">
+          <label>Enter 6-digit OTP</label>
+          <div class="otp-row">
+            <input type="text" class="otp-digit" maxlength="1" oninput="otpNext(this, 0)">
+            <input type="text" class="otp-digit" maxlength="1" oninput="otpNext(this, 1)">
+            <input type="text" class="otp-digit" maxlength="1" oninput="otpNext(this, 2)">
+            <input type="text" class="otp-digit" maxlength="1" oninput="otpNext(this, 3)">
+            <input type="text" class="otp-digit" maxlength="1" oninput="otpNext(this, 4)">
+            <input type="text" class="otp-digit" maxlength="1" oninput="otpNext(this, 5)">
+          </div>
+          <div class="field-hint">OTP valid for 10 minutes · <a href="#" style="color:var(--blue)" onclick="sendOTP(); return false;">Resend</a></div>
+        </div>
+      </div>
+
+      <!-- USER TYPE -->
+      <div style="margin-bottom: 1.1rem;">
+        <label style="margin-bottom: 0.6rem;">I am a</label>
+        <div class="user-type-grid">
+          <button type="button" class="user-type-btn selected" data-type="citizen" onclick="selectType(this)">
+            <span class="ut-icon">👤</span>Citizen
+          </button>
+          <button type="button" class="user-type-btn" data-type="csc" onclick="selectType(this)">
+            <span class="ut-icon">🏢</span>CSC Operator
+          </button>
+          <button type="button" class="user-type-btn" data-type="ngo" onclick="selectType(this)">
+            <span class="ut-icon">🤝</span>NGO / Org
+          </button>
+          <button type="button" class="user-type-btn" data-type="government" onclick="selectType(this)">
+            <span class="ut-icon">🏛️</span>Govt. Official
+          </button>
+        </div>
+      </div>
+
+      <!-- Remember + Forgot -->
+      <div class="check-row">
+        <label class="check-label">
+          <input type="checkbox" id="remember"> Keep me signed in
+        </label>
+        <a href="#" class="forgot-link" onclick="showForgot(); return false;">Forgot password?</a>
+      </div>
+
+      <!-- Submit -->
+      <button type="submit" class="submit-btn" id="submitBtn">
+        <span class="btn-text">Sign In →</span>
+        <div class="btn-spinner"></div>
+      </button>
+
+      <div class="divider"><span>OR CONTINUE WITH</span></div>
+
+      <div class="social-row">
+        <button type="button" class="social-btn" onclick="socialLogin('google')">
+          <svg width="16" height="16" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
+          Google
+        </button>
+        <button type="button" class="social-btn" onclick="socialLogin('digilocker')">
+          📁 DigiLocker
+        </button>
+        <button type="button" class="social-btn" onclick="socialLogin('umang')">
+          🇮🇳 UMANG
+        </button>
+      </div>
+
+    </form>
+
+    <!-- Success state (hidden by default) -->
+    <div class="success-card" id="successCard">
+      <div class="success-icon">✅</div>
+      <h2>Welcome back!</h2>
+      <p>You've been successfully signed in. Redirecting to your dashboard...</p>
+    </div>
+
+    <div class="form-footer">
+      New to JanKalyan? <a href="signup.html">Create free account</a>
+    </div>
+
+  </div>
+</div>
+
+<script>
+let activeMethod = 'aadhaar';
+let selectedType = 'citizen';
+
+// ── Method switching ────────────────────────────────────────────────────────
+function switchMethod(method, btn) {
+  activeMethod = method;
+  document.querySelectorAll('.method-section').forEach(s => s.style.display = 'none');
+  document.querySelectorAll('.method-tab').forEach(b => b.classList.remove('active'));
+  document.getElementById('method-' + method).style.display = 'block';
+  btn.classList.add('active');
+
+  // Update step
+  updateStep(1, 'Choose login method');
+}
+
+// ── User type selection ─────────────────────────────────────────────────────
+function selectType(btn) {
+  document.querySelectorAll('.user-type-btn').forEach(b => b.classList.remove('selected'));
+  btn.classList.add('selected');
+  selectedType = btn.dataset.type;
+}
+
+// ── Password visibility ─────────────────────────────────────────────────────
+function togglePwd(id, btn) {
+  const input = document.getElementById(id);
+  if (input.type === 'password') {
+    input.type = 'text';
+    btn.textContent = '🙈';
+  } else {
+    input.type = 'password';
+    btn.textContent = '👁';
+  }
+}
+
+// ── OTP flow ────────────────────────────────────────────────────────────────
+function sendOTP() {
+  const phone = document.getElementById('phoneInput').value.trim();
+  
+  // Check length
+  if (phone.length !== 10) {
+    showError('Mobile number must be exactly 10 digits');
+    return;
+  }
+  
+  // Check if all digits
+  if (!/^\d{10}$/.test(phone)) {
+    showError('Mobile number must contain only digits');
+    return;
+  }
+  
+  // Check if first digit is 6, 7, 8, or 9
+  const firstDigit = parseInt(phone[0]);
+  if (firstDigit < 6 || firstDigit > 9) {
+    showError('Mobile number must start with 6, 7, 8, or 9');
+    return;
+  }
+  
+  hideError();
+  document.getElementById('otpGroup').style.display = 'block';
+  document.querySelectorAll('.otp-digit')[0].focus();
+  updateStep(2, 'Enter OTP sent to +91-' + phone.slice(-4).padStart(10, '•'));
+}
+
+function otpNext(input, index) {
+  const digits = document.querySelectorAll('.otp-digit');
+  if (input.value && index < 5) {
+    digits[index + 1].focus();
+  }
+  // Auto-submit when all filled
+  const allFilled = Array.from(digits).every(d => d.value.length === 1);
+  if (allFilled) {
+    updateStep(3, 'Verifying OTP...');
+  }
+}
+
+// ── Form submission ─────────────────────────────────────────────────────────
+document.getElementById('loginForm').addEventListener('submit', function(e) {
+  e.preventDefault();
+  if (!validate()) return;
+
+  const btn = document.getElementById('submitBtn');
+  btn.classList.add('loading');
+  updateStep(3, 'Authenticating...');
+  hideError();
+
+  setTimeout(() => {
+    btn.classList.remove('loading');
+    // Save to localStorage
+    const userData = {
+      userType: selectedType,
+      loginMethod: activeMethod,
+      loginTime: new Date().toISOString(),
+      isLoggedIn: true
+    };
+    localStorage.setItem('jankalyanUser', JSON.stringify(userData));
+
+    // Show success
+    document.getElementById('loginForm').style.display = 'none';
+    document.querySelector('.step-indicator').style.display = 'none';
+    document.querySelector('.form-header').style.display = 'none';
+    document.querySelector('.secure-badge').style.display = 'none';
+    const success = document.getElementById('successCard');
+    success.style.display = 'block';
+
+    setTimeout(() => window.location.href = 'index.html', 2000);
+  }, 1600);
+});
+
+function validate() {
+  hideError();
+  if (activeMethod === 'aadhaar') {
+    const val = document.getElementById('aadhaarInput').value.replace(/\s/g, '');
+    if (val.length !== 12 || !/^\d{12}$/.test(val)) {
+      showError('Please enter a valid 12-digit Aadhaar number');
+      return false;
+    }
+    if (!document.getElementById('pwdAadhaar').value) {
+      showError('Please enter your password or PIN');
+      return false;
+    }
+  }
+  if (activeMethod === 'email') {
+    const email = document.getElementById('emailInput').value;
+    if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      showError('Please enter a valid email address');
+      return false;
+    }
+    if (!document.getElementById('pwdEmail').value) {
+      showError('Please enter your password');
+      return false;
+    }
+  }
+  if (activeMethod === 'otp') {
+    const digits = Array.from(document.querySelectorAll('.otp-digit'));
+    if (digits.some(d => !d.value)) {
+      showError('Please enter the complete 6-digit OTP');
+      return false;
+    }
+  }
+  return true;
+}
+
+// ── Social login ────────────────────────────────────────────────────────────
+function socialLogin(provider) {
+  const map = { google: 'Google', digilocker: 'DigiLocker', umang: 'UMANG App' };
+  showError(`Redirecting to ${map[provider]}... (demo mode)`);
+  setTimeout(hideError, 3000);
+}
+
+// ── Forgot password ─────────────────────────────────────────────────────────
+function showForgot() {
+  showError('A password reset link will be sent to your registered email or mobile number.', '#0d47a1', '#eff6ff', '#bfdbfe');
+}
+
+// ── Step indicator ──────────────────────────────────────────────────────────
+function updateStep(n, label) {
+  document.querySelectorAll('.step-dot').forEach((d, i) => {
+    d.classList.remove('active', 'done');
+    if (i < n - 1) d.classList.add('done');
+    if (i === n - 1) d.classList.add('active');
+  });
+  document.getElementById('stepLabel').textContent = label;
+}
+
+// ── Error helpers ───────────────────────────────────────────────────────────
+function showError(msg, color, bg, border) {
+  const el = document.getElementById('errorFlash');
+  el.textContent = '⚠️ ' + msg;
+  el.style.display = 'block';
+  if (color) el.style.color = color;
+  if (bg) el.style.background = bg;
+  if (border) el.style.borderColor = border;
+}
+function hideError() {
+  const el = document.getElementById('errorFlash');
+  el.style.display = 'none';
+  el.style.color = '';
+  el.style.background = '';
+  el.style.borderColor = '';
+}
+
+// ── Aadhaar auto-format ─────────────────────────────────────────────────────
+document.getElementById('aadhaarInput').addEventListener('input', function(e) {
+  let val = e.target.value.replace(/\D/g, '').slice(0, 12);
+  e.target.value = val.replace(/(.{4})(?=.)/g, '$1 ').trim();
+});
+
+// ── Check if already logged in ─────────────────────────────────────────────
+(function() {
+  const user = localStorage.getItem('jankalyanUser');
+  if (user) {
+    const u = JSON.parse(user);
+    if (u.isLoggedIn) {
+      // Already logged in, optionally redirect
+    }
+  }
+})();
+</script>
+</body>
+</html>

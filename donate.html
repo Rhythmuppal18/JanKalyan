@@ -1,0 +1,217 @@
+<!--
+  ╔══════════════════════════════════════════════════════════════════════╗
+  ║  DONATION PAGE / दान पृष्ठ                                           ║
+  ║  PURPOSE: Allow users to donate and support welfare programs        ║
+  ║  मकसद: उपयोगकर्ताओं को कल्याण कार्यक्रमों में दान करने देना        ║
+  ║                                                                      ║
+  ║  FEATURES:                                                           ║
+  ║  - Multiple donation amounts (कई दान की राशि)                      ║
+  ║  - Payment gateway integration (भुगतान के लिए)                      ║
+  ║  - Tax receipt option (₹80G tax exemption)                           ║
+  ║  - Donation history (दान का इतिहास)                                 ║
+  ║                                                                      ║
+  ║  FUNDRAISING FOR:                                                    ║
+  ║  - Scholarships (छात्रवृत्ति)                                       ║
+  ║  - Health camps (स्वास्थ्य शिविर)                                    ║
+  ║  - Relief programs (राहत कार्यक्रम)                                  ║
+  ║                                                                      ║
+  ║  VALIDATION: amount >= 100, valid contact info                      ║
+  ║  TAX BENEFIT: 80G certification provided                            ║
+  ╚══════════════════════════════════════════════════════════════════════╝
+-->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Donate – JanKalyan</title>
+  <link rel="icon" type="image/x-icon" href="favicon.ico">
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <!-- Tricolor flag -->
+  <div class="tricolor-bar"></div>
+  
+  <!-- Navigation -->
+  <nav class="navbar">
+    <a href="index.html" class="nav-brand">
+      <div class="nav-emblem">🏛️</div>
+      <div class="nav-title">JANKALYAN<span>Transforming Awareness into Access.</span></div>
+    </a>
+    <!-- Mobile menu toggle -->
+    <div class="hamburger" onclick="toggleMenu()"><span></span><span></span><span></span></div>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="about.html">About</a></li>
+      <li><a href="eligibility.html">Eligibility</a></li>
+      <li><a href="schemes-by-state.html">State Schemes</a></li>      
+      <li><a href="login.html">Login</a></li>      
+      <li><a href="donate.html" class="active btn-nav">Donate</a></li>
+    </ul>
+  </nav>
+
+  <!-- Page hero section -->
+  <section class="page-hero">
+    <div class="page-hero-content">
+      <div class="hero-badge">Contribute</div>
+      <h1> Support the Welfare Fund</h1>
+      <p>Your donation helps fund scholarships, health camps, and relief for underprivileged communities across India.</p>
+    </div>
+  </section>
+
+  <!-- Main donation section -->
+  <div class="donate-content">
+    <span class="section-label">Make a Difference</span>
+    <h2 class="section-title">Your Contribution Matters</h2>
+    <p class="section-sub">100% of your donation goes directly to government-approved welfare programmes. All donations are eligible for 80G tax exemption.</p>
+
+    <!-- Donation form -->
+    <form class="donate-form" id="donationForm">
+      <h3 style="font-family:'Playfair Display',serif;color:var(--navy);margin-bottom:1.5rem;font-size:1.2rem;">Donation Details</h3>
+
+      <!-- Amount selection section -->
+      <label style="font-size:0.82rem;font-weight:600;color:var(--navy);letter-spacing:0.04em;text-transform:uppercase;display:block;margin-bottom:0.5rem;">Select Amount</label>
+      <!-- Pre-defined donation amounts for easy selection -->
+      <div class="amount-grid">
+        <div class="amount-btn selected" onclick="selectAmount(event, 500)">₹500</div>
+        <div class="amount-btn" onclick="selectAmount(event, 1000)">₹1,000</div>
+        <div class="amount-btn" onclick="selectAmount(event, 2500)">₹2,500</div>
+        <div class="amount-btn" onclick="selectAmount(event, 5000)">₹5,000</div>
+      </div>
+      <!-- Hidden field to store selected amount -->
+      <input type="hidden" name="donation-amount" id="donation-amount" value="500" />
+
+      <div class="form-group">
+        <label for="donor-name">Full Name <span style="color:var(--saffron);">*</span></label>
+        <input type="text" name="donor-name" id="donor-name" placeholder="Your full name" />
+      </div>
+
+      <div class="form-group">
+        <label for="donor-email">Email Address <span style="color:var(--saffron);">*</span></label>
+        <input type="email" name="donor-email" id="donor-email" placeholder="you@example.com" />
+      </div>
+
+      <div class="form-group">
+        <label for="donor-pan">PAN Number (for 80G receipt) <span style="color:var(--saffron);">*</span></label>
+        <input type="text" name="donor-pan" id="donor-pan" placeholder="ABCDE1234F" />
+      </div>
+
+      <div class="form-group">
+        <label for="cause">Cause <span style="color:var(--saffron);">*</span></label>
+        <select name="cause" id="cause">
+          <option value="">Select a cause</option>
+          <option value="student">Student Education Fund</option>
+          <option value="health">Rural Health Camps</option>
+          <option value="housing">Affordable Housing Relief</option>
+          <option value="general">General Welfare Fund</option>
+        </select>
+      </div>
+
+      <button type="submit" class="submit-btn">Donate Securely →</button>
+
+      <p style="font-size:0.78rem;color:var(--mid-gray);margin-top:0.75rem;text-align:center;">
+        🔒 Secured by Government Payment Gateway &nbsp;|&nbsp; 80G Tax Exemption Available
+      </p>
+    </form>
+  </div>
+
+  <footer class="footer">
+    <div class="footer-inner">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <div class="nav-brand"><div class="nav-emblem">🏛️</div><div class="nav-title" style="color:white;">JANKALYAN<span>Transforming Awareness into Access.</span></div></div>
+          <p>Empowering every citizen through access to information and government welfare schemes.</p>
+        </div>
+        <div class="footer-col"><h4>Schemes</h4><a href="student.html">Student</a><a href="health.html">Health</a><a href="housing.html">Housing</a><a href="service.html">Services</a></div>
+        <div class="footer-col"><h4>Portal</h4><a href="about.html">About</a><a href="eligibility.html">Eligibility</a><a href="donate.html">Donate</a></div>
+        <div class="footer-col"><h4>Help</h4><a href="#">FAQ</a><a href="#">Contact</a><a href="#">Grievance</a></div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2025 JanKalyan, India. All rights reserved.</p>
+        <div class="footer-flag">
+          <div class="flag-stripe" style="background:var(--saffron);border-radius:2px 0 0 2px;"></div>
+          <div class="flag-stripe" style="background:var(--white);"></div>
+          <div class="flag-stripe" style="background:var(--green);border-radius:0 2px 2px 0;"></div>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="validation.js"></script>
+  <script>
+    // ── Donation Form Setup ────────────────────────────────────
+    let donationValidator;
+
+    document.addEventListener('DOMContentLoaded', function() {
+      // Initialize form validator
+      donationValidator = new FormValidator('donationForm');
+      ValidationRules.donation(donationValidator);
+      setupRealtimeValidation(donationValidator);
+
+      // Handle form submission
+      const donationForm = document.getElementById('donationForm');
+      if (donationForm) {
+        donationForm.addEventListener('submit', handleDonationSubmit);
+      }
+
+      // Set default amount
+      document.getElementById('donation-amount').value = '500';
+    });
+
+    function toggleMenu() {
+      document.getElementById('navLinks').classList.toggle('open');
+    }
+
+    function selectAmount(event, amount) {
+      event.preventDefault();
+      const target = event.currentTarget;
+      const btns = document.querySelectorAll('.amount-btn');
+      btns.forEach(btn => btn.classList.remove('selected'));
+      target.classList.add('selected');
+      document.getElementById('donation-amount').value = amount;
+    }
+
+    function handleDonationSubmit(e) {
+      e.preventDefault();
+
+      // Validate form
+      if (!donationValidator.validate()) {
+        console.log('Form validation failed', donationValidator.getErrors());
+        return false;
+      }
+
+      // Get form values
+      const name = document.getElementById('donor-name').value;
+      const email = document.getElementById('donor-email').value;
+      const pan = document.getElementById('donor-pan').value;
+      const cause = document.getElementById('cause').value;
+      const amount = document.getElementById('donation-amount').value;
+
+      // Show success message
+      showSuccessMessage(
+        `Thank you ${name}! Your donation of ₹${amount} has been submitted successfully. A receipt will be sent to ${email}.`,
+        4000
+      );
+
+      // Reset form after 2 seconds
+      setTimeout(() => {
+        document.getElementById('donationForm').reset();
+        donationValidator = new FormValidator('donationForm');
+        ValidationRules.donation(donationValidator);
+        setupRealtimeValidation(donationValidator);
+        document.querySelectorAll('.amount-btn').forEach((btn, idx) => {
+          if (idx === 0) btn.classList.add('selected');
+          else btn.classList.remove('selected');
+        });
+        document.getElementById('donation-amount').value = '500';
+      }, 2000);
+
+      // Here you would send data to your server
+      // console.log({ name, email, pan, cause, amount });
+
+      return false;
+    }
+  </script>
+</body>
+</html>

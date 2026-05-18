@@ -1,0 +1,507 @@
+<!--
+  ╔══════════════════════════════════════════════════════════════════════╗
+  ║  PROJECT: JANKALYAN - Government Welfare Schemes Portal             ║
+  ║  PURPOSE: Help Indians discover & access 480+ government schemes    ║
+  ║  CATEGORIES: Education, Health, Housing, Services & Employment      ║
+  ║  FEATURES: Search, Eligibility Check, State-wise Schemes, Login      ║
+  ║  BUILT WITH: HTML5, CSS3, Vanilla JavaScript                        ║
+  ╚══════════════════════════════════════════════════════════════════════╝
+-->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- Meta tags - Ye sab browser ko batate hain ki ye page kaisi hai -->
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>JANKALYAN — Transforming Awareness into Access</title>
+  <link rel="icon" type="image/x-icon" href="favicon.ico">
+  <!-- CSS file - ye styling ke liye hai -->
+  <link rel="stylesheet" href="style.css" />
+  <!-- Google Fonts - beautiful fonts import kar rahe hain -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,300;0,600;0,700;0,900;1,300;1,700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+</head>
+<body>
+
+  <!-- Tricolor Bar - India ka national flag colors show karte hain (saffron, white, green) -->
+  <div class="tricolor-bar"></div>
+
+  <!-- Glassmorphism Navbar - Navigation bar jo page ke top par rehta hai (sticky)
+       Ye menu contain karta hai: Home, About, Eligibility, Schemes, Login, Donate -->
+  <nav class="navbar" id="navbar">
+    <a href="index.html" class="nav-brand">
+      <div class="nav-emblem">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+          <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+      <div class="nav-title">JANKALYAN<span>Transforming Awareness into Access</span></div>
+    </a>
+
+    <div class="hamburger" id="hamburger" onclick="toggleMenu()">
+      <span></span><span></span><span></span>
+    </div>
+
+    <ul class="nav-links" id="navLinks">
+      <li><a href="index.html" class="active">Home</a></li>
+      <li><a href="about.html">About</a></li>
+      <li><a href="eligibility.html">Eligibility</a></li>
+      <li><a href="schemes-by-state.html">State Schemes</a></li>
+      <li><a href="student.html">Schemes</a></li>
+      <li><a href="login.html" class="btn-nav">Login</a></li>
+      <li><a href="donate.html" class="btn-nav">Donate</a></li>
+    </ul>
+  </nav>
+
+  <!-- Hero Section - Ye main landing area hai jo sabse pehle dikh ta hai
+       Ismein tagline, buttons, aur scheme cards hote hain -->
+  <section class="hero">
+    <div class="hero-bg-grid"></div>
+    <div class="hero-content">
+      <div class="hero-badge">
+        <span class="badge-dot"></span>
+        India's #1 Welfare Scheme Portal
+      </div>
+      <h1>
+        Every Citizen Deserves<br>
+        <em>Their Rights.</em>
+      </h1>
+      <p>Discover 480+ government schemes for students, health, housing, and essential services — verified, accessible, and in one place.</p>
+      <div class="hero-actions">
+        <a href="#categories" class="btn-primary">Explore Schemes ↓</a>
+        <a href="eligibility.html" class="btn-ghost">Check Eligibility →</a>
+      </div>
+      <div class="hero-stats">
+        <div class="hstat"><span>480+</span><em>Active Schemes</em></div>
+        <div class="hstat-divider"></div>
+        <div class="hstat"><span>28</span><em>States Covered</em></div>
+        <div class="hstat-divider"></div>
+        <div class="hstat"><span>10K+</span><em>Citizens Helped</em></div>
+      </div>
+    </div>
+    <div class="hero-visual">
+      <div class="hero-card hc1">
+        <div class="hc-icon">🏥</div>
+        <div><strong>Ayushman Bharat</strong><br><small>₹5 Lakh Health Cover</small></div>
+      </div>
+      <div class="hero-card hc2">
+        <div class="hc-icon">🎓</div>
+        <div><strong>NMMS Scholarship</strong><br><small>₹12,000/year</small></div>
+      </div>
+      <div class="hero-card hc3">
+        <div class="hc-icon">🏠</div>
+        <div><strong>PMAY Housing</strong><br><small>₹1.2 Lakh Grant</small></div>
+      </div>
+      <div class="hero-orb"></div>
+    </div>
+  </section>
+
+  <!-- Live Updates Ticker -->
+  <div class="news-ticker-wrap">
+    <div class="ticker-label">
+      <span class="ticker-dot"></span> LIVE UPDATES
+    </div>
+    <div class="ticker-track" id="tickerTrack">
+      <div class="ticker-inner" id="tickerInner">Loading updates...</div>
+    </div>
+  </div>
+
+  <!-- Live News Section -->
+  <section class="news-section" id="newsSection">
+    <div class="section-header">
+      <span class="section-label">Live Feed</span>
+      <h2 class="section-title">Government & Economic Updates</h2>
+      <p class="section-sub">Real-time news from India's policy & welfare landscape</p>
+    </div>
+    <div class="news-grid" id="newsGrid">
+      <div class="news-loader">
+        <div class="loader-spin"></div>
+        <p>Fetching latest updates...</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Quick Search & Filter -->
+  <section class="filter-section" id="filterSection">
+    <div class="filter-inner">
+      <span class="section-label">Smart Search</span>
+      <h2 class="section-title">Find Your Scheme Instantly</h2>
+      <div class="search-bar">
+        <svg class="search-icon" width="20" height="20" viewBox="0 0 24 24" fill="none">
+          <circle cx="11" cy="11" r="8" stroke="currentColor" stroke-width="2"/>
+          <path d="M21 21l-4.35-4.35" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+        <input type="text" id="schemeSearch" placeholder="Search schemes, benefits, or eligibility..." oninput="filterSchemes()">
+      </div>
+      <div class="filter-chips" id="filterChips">
+        <button class="chip active" onclick="setFilter('all', this)">All Schemes</button>
+        <button class="chip" onclick="setFilter('student', this)">🎓 Education</button>
+        <button class="chip" onclick="setFilter('health', this)">🏥 Health</button>
+        <button class="chip" onclick="setFilter('housing', this)">🏠 Housing</button>
+        <button class="chip" onclick="setFilter('service', this)">⚙️ Services</button>
+      </div>
+      <div class="scheme-results" id="schemeResults"></div>
+    </div>
+  </section>
+
+  <!-- Category Cards -->
+  <section class="categories-section" id="categories">
+    <div class="section-header">
+      <span class="section-label">Categories</span>
+      <h2 class="section-title">Browse by Sector</h2>
+      <p class="section-sub">Click any category to explore all available government schemes in that sector.</p>
+    </div>
+    <div class="category-grid">
+      <a href="student.html" class="category-card cat-student">
+        <div class="cat-bg-icon">🎓</div>
+        <div class="cat-content">
+          <div class="cat-icon-wrap">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none"><path d="M22 10v6M2 10l10-5 10 5-10 5-10-5z" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M6 12v5c3 3 9 3 12 0v-5" stroke="white" stroke-width="2" stroke-linecap="round"/></svg>
+          </div>
+          <h3>Student Welfare</h3>
+          <p>Scholarships, fellowships, education loans & skill development</p>
+          <div class="cat-count">12 Schemes</div>
+        </div>
+        <span class="cat-arrow">→</span>
+      </a>
+
+      <a href="health.html" class="category-card cat-health">
+        <div class="cat-bg-icon">🏥</div>
+        <div class="cat-content">
+          <div class="cat-icon-wrap">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none"><path d="M22 12h-4l-3 9L9 3l-3 9H2" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+          <h3>Health & Medical</h3>
+          <p>Insurance, free treatment, maternal care & nutrition support</p>
+          <div class="cat-count">8 Schemes</div>
+        </div>
+        <span class="cat-arrow">→</span>
+      </a>
+
+      <a href="housing.html" class="category-card cat-housing">
+        <div class="cat-bg-icon">🏠</div>
+        <div class="cat-content">
+          <div class="cat-icon-wrap">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M9 22V12h6v10" stroke="white" stroke-width="2" stroke-linecap="round"/></svg>
+          </div>
+          <h3>Housing & Shelter</h3>
+          <p>Affordable housing, rural construction & home loan subsidies</p>
+          <div class="cat-count">8 Schemes</div>
+        </div>
+        <span class="cat-arrow">→</span>
+      </a>
+
+      <a href="service.html" class="category-card cat-service">
+        <div class="cat-bg-icon">⚙️</div>
+        <div class="cat-content">
+          <div class="cat-icon-wrap">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="3" stroke="white" stroke-width="2"/><path d="M19.07 4.93a10 10 0 010 14.14M4.93 4.93a10 10 0 000 14.14" stroke="white" stroke-width="2" stroke-linecap="round"/></svg>
+          </div>
+          <h3>Essential Services</h3>
+          <p>Employment, ration, electricity, water & social security</p>
+          <div class="cat-count">8 Schemes</div>
+        </div>
+        <span class="cat-arrow">→</span>
+      </a>
+    </div>
+  </section>
+
+  <!-- Sponsored / Featured Schemes -->
+  <section class="featured-section">
+    <div class="featured-badge-row">
+      <span class="featured-badge">⭐ Featured Schemes</span>
+      <span class="featured-sub">Priority visibility for high-impact programmes</span>
+    </div>
+    <div class="featured-grid">
+      <div class="featured-card fc-gold">
+        <div class="fc-sponsor-tag">Flagship Programme</div>
+        <div class="fc-icon">🏥</div>
+        <h3>Ayushman Bharat – PMJAY</h3>
+        <p>₹5 lakh/year health cover for 55 crore+ beneficiaries. World's largest health assurance scheme.</p>
+        <div class="fc-meta">
+          <span>Health Insurance</span>
+          <span>All Ages 70+ Covered</span>
+        </div>
+        <a href="health.html" class="fc-btn">View Details →</a>
+      </div>
+      <div class="featured-card fc-blue">
+        <div class="fc-sponsor-tag">Urban Priority</div>
+        <div class="fc-icon">🏠</div>
+        <h3>PMAY – Urban 2.0</h3>
+        <p>Interest subsidy on home loans for EWS, LIG & MIG categories. Open enrollment throughout 2025-26.</p>
+        <div class="fc-meta">
+          <span>Housing Subsidy</span>
+          <span>Up to ₹2.67L benefit</span>
+        </div>
+        <a href="housing.html" class="fc-btn">View Details →</a>
+      </div>
+      <div class="featured-card fc-green">
+        <div class="fc-sponsor-tag">New for 2026</div>
+        <div class="fc-icon">🎓</div>
+        <h3>PM YASASVI Scheme</h3>
+        <p>Up to ₹1.25 lakh/year for OBC, EBC & DNT students in Class 9–12. Applications now open.</p>
+        <div class="fc-meta">
+          <span>Scholarship</span>
+          <span>Class 9–12</span>
+        </div>
+        <a href="student.html" class="fc-btn">View Details →</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Rotating Quotes Section -->
+  <section class="quote-section">
+    <div class="quote-orb q1"></div>
+    <div class="quote-orb q2"></div>
+    <div class="quote-inner">
+      <span class="section-label" style="color:rgba(255,153,51,0.8);">Leadership & Vision</span>
+      <div class="quote-carousel" id="quoteCarousel">
+        <div class="quote-slide active">
+          <div class="quote-mark">"</div>
+          <p class="quote-text">India's strength lies in its villages. Every citizen deserves the dignity of a secure home, quality education, and good health — these are not privileges but fundamental rights we are committed to deliver.</p>
+          <div class="quote-author-row">
+            <div class="quote-avatar">PM</div>
+            <div>
+              <strong>Prime Minister of India</strong>
+              <span>Narendra Modi</span>
+            </div>
+          </div>
+        </div>
+        <div class="quote-slide">
+          <div class="quote-mark">"</div>
+          <p class="quote-text">Technology must be the great equaliser. Every scheme, every benefit, every opportunity that the government offers must reach the last person in the last village through digital infrastructure.</p>
+          <div class="quote-author-row">
+            <div class="quote-avatar">FM</div>
+            <div>
+              <strong>Finance Minister of India</strong>
+              <span>Nirmala Sitharaman</span>
+            </div>
+          </div>
+        </div>
+        <div class="quote-slide">
+          <div class="quote-mark">"</div>
+          <p class="quote-text">A welfare state is not measured by how many schemes it creates, but by how many lives it genuinely transforms. Awareness is the first step — and that is what platforms like JanKalyan exist to solve.</p>
+          <div class="quote-author-row">
+            <div class="quote-avatar">JK</div>
+            <div>
+              <strong>JanKalyan Advisory Board</strong>
+              <span>Policy & Governance Wing</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="quote-dots" id="quoteDots">
+        <span class="qdot active" onclick="goToQuote(0)"></span>
+        <span class="qdot" onclick="goToQuote(1)"></span>
+        <span class="qdot" onclick="goToQuote(2)"></span>
+      </div>
+    </div>
+  </section>
+
+  <!-- Premium Membership Pricing -->
+  <section class="pricing-section">
+    <div class="section-header">
+      <span class="section-label">Premium Access</span>
+      <h2 class="section-title">Priority Processing Membership</h2>
+      <p class="section-sub">Get faster eligibility verification, expert guidance, and application support</p>
+    </div>
+    <div class="pricing-grid">
+      <div class="pricing-card pc-free">
+        <div class="pc-label">Free</div>
+        <div class="pc-price">₹0<span>/month</span></div>
+        <p class="pc-desc">Basic access for all citizens</p>
+        <ul class="pc-features">
+          <li>✓ Browse all 50+ schemes</li>
+          <li>✓ Advanced eligibility table</li>
+          <li>✓ Official portal links</li>
+          <li class="dim">✗ Expert consultation</li>
+          <li class="dim">✗ Application tracking</li>
+          <li class="dim">✗ Document review</li>
+        </ul>
+        <a href="javascript:location.reload();" class="pc-btn pc-btn-outline">Get Started</a>
+      </div>
+      <div class="pricing-card pc-pro popular">
+        <div class="pc-popular-tag">Most Popular</div>
+        <div class="pc-label">JanKalyan Pro</div>
+        <div class="pc-price">₹99<span>/month</span></div>
+        <p class="pc-desc">For individuals seeking faster access</p>
+        <ul class="pc-features">
+          <li>✓ All Free features</li>
+          <li>✓ AI Eligibility Matching</li>
+          <li>✓ Application Status Tracking</li>
+          <li>✓ Document Checklist Generator</li>
+          <li>✓ Priority Email Support</li>
+          <li class="dim">✗ Expert consultation</li>
+        </ul>
+        <a href="#" class="pc-btn pc-btn-primary" onclick="openPremiumModal('pro'); return false;">Start Free Trial</a>
+      </div>
+      <div class="pricing-card pc-enterprise">
+        <div class="pc-label">NGO / CSC Partner</div>
+        <div class="pc-price">₹499<span>/month</span></div>
+        <p class="pc-desc">For organisations serving communities</p>
+        <ul class="pc-features">
+          <li>✓ All Pro features</li>
+          <li>✓ Bulk eligibility processing</li>
+          <li>✓ Dedicated account manager</li>
+          <li>✓ Expert consultation calls</li>
+          <li>✓ White-label reporting</li>
+          <li>✓ API Access</li>
+        </ul>
+        <a href="#" class="pc-btn pc-btn-outline" onclick="openPremiumModal('enterprise'); return false;">Contact Us</a>
+      </div>
+    </div>
+  </section>
+
+
+
+  <!-- Stats Section -->
+  <section class="insights-section">
+    <div class="insights-inner">
+      <div class="section-header">
+        <span class="section-label">Portal Statistics</span>
+        <h2 class="section-title">Our Reach</h2>
+      </div>
+      <div class="insights-grid">
+        <div class="insight-card">
+          <div class="insight-number" data-target="10000">0</div>
+          <div class="insight-label">Total Visitors</div>
+        </div>
+        <div class="insight-card">
+          <div class="insight-number" data-target="480">0</div>
+          <div class="insight-label">Active Schemes</div>
+        </div>
+        <div class="insight-card">
+          <div class="insight-number" data-target="28">0</div>
+          <div class="insight-label">States Covered</div>
+        </div>
+        <div class="insight-card">
+          <div class="insight-number" data-suffix="Cr" data-target="240">0</div>
+          <div class="insight-label">Donations Raised</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="faq-wrap">
+    <div class="faq-inner">
+      <div class="section-header" style="text-align:center;">
+        <span class="section-label">Got Questions?</span>
+        <h2 class="section-title">Frequently Asked</h2>
+      </div>
+      <div class="faq-accordion">
+        <details class="faq-item">
+          <summary>Why use JanKalyan over visiting government sites directly?</summary>
+          <div class="faq-content"><p>JanKalyan aggregates 480+ schemes from dozens of ministries in one verified interface. Instead of navigating 20+ government portals, you get everything — eligibility criteria, documents needed, and direct apply links — in one place.</p></div>
+        </details>
+        <details class="faq-item">
+          <summary>How do I check my eligibility for a specific scheme?</summary>
+          <div class="faq-content"><p>Use the <strong>Eligibility</strong> page for a quick-reference table across all major schemes. The Smart Search above also lets you filter by category. For AI-powered matching, our Pro plan (launching Q2 2026) will match your exact profile to every applicable scheme.</p></div>
+        </details>
+        <details class="faq-item">
+          <summary>What documents are typically required?</summary>
+          <div class="faq-content"><p>Most schemes require: Aadhaar Card, Income Certificate (from Tehsildar/SDO), BPL/Ration Card, Bank Passbook (for DBT), and a Caste Certificate if applicable. Each scheme's detail modal on this portal lists the exact documents needed.</p></div>
+        </details>
+        <details class="faq-item">
+          <summary>Can I apply for multiple schemes simultaneously?</summary>
+          <div class="faq-content"><p>Yes. As long as you meet each scheme's individual eligibility criteria, there is no restriction on benefiting from multiple programmes. Many citizens receive benefits from PMAY, Ayushman Bharat, and NMMS concurrently.</p></div>
+        </details>
+        <details class="faq-item">
+          <summary>Is there a helpline if I get stuck in the application process?</summary>
+          <div class="faq-content"><p>Yes. Visit your nearest Common Service Centre (CSC) or call the Citizen Help Desk: <strong>1800-11-0001</strong>. JanKalyan Pro subscribers also get priority email support from our team.</p></div>
+        </details>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer-inner">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <div class="nav-brand" style="margin-bottom:1rem;">
+            <div class="nav-emblem">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </div>
+            <div class="nav-title" style="color:white;">JANKALYAN<span>Transforming Awareness into Access.</span></div>
+          </div>
+          <p>A centralised digital platform connecting 1.4 billion citizens to government welfare schemes. Empowering India, one scheme at a time.</p>
+          <div class="footer-flag">
+            <div class="flag-stripe" style="background:#FF9933;border-radius:3px 0 0 3px;"></div>
+            <div class="flag-stripe" style="background:#fff;"></div>
+            <div class="flag-stripe" style="background:#138808;border-radius:0 3px 3px 0;"></div>
+          </div>
+        </div>
+        <div class="footer-col">
+          <h4>Schemes</h4>
+          <a href="student.html">Student Welfare</a>
+          <a href="health.html">Health Schemes</a>
+          <a href="housing.html">Housing Schemes</a>
+          <a href="service.html">Essential Services</a>
+        </div>
+        <div class="footer-col">
+          <h4>Portal</h4>
+          <a href="about.html">About Us</a>
+          <a href="eligibility.html">Eligibility</a>
+          <a href="donate.html">Donate</a>
+          <a href="#">Premium</a>
+        </div>
+        <div class="footer-col">
+          <h4>Help</h4>
+          <a href="#">FAQ</a>
+          <a href="#">Contact Us</a>
+          <a href="#">Grievance Portal</a>
+          <a href="#">RTI</a>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2025–2026 JanKalyan, India. All rights reserved. | Informational portal — not an official government website.</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Premium Access Modal -->
+  <div id="premiumModal" class="modal">
+    <div class="modal-content">
+      <div class="modal-close" onclick="closePremiumModal()">✕</div>
+      <div class="modal-header">
+        <h2>Upgrade to Premium Access</h2>
+        <p>Unlock powerful features for faster scheme access</p>
+      </div>
+      <div class="modal-body">
+        <form id="premiumForm">
+          <div class="form-group">
+            <label>Full Name *</label>
+            <input type="text" required placeholder="Your full name">
+          </div>
+          <div class="form-group">
+            <label>Email Address *</label>
+            <input type="email" required placeholder="your@email.com">
+          </div>
+          <div class="form-group">
+            <label>Phone Number *</label>
+            <input type="tel" required placeholder="9XXXXXXXXX" maxlength="10" inputmode="numeric" oninput="this.value = this.value.replace(/[^0-9]/g, '')">
+          </div>
+          <div class="form-group">
+            <label>Selected Plan *</label>
+            <select id="planSelect" required>
+              <option value="">Choose a plan</option>
+              <option value="pro">JanKalyan Pro - ₹99/month</option>
+              <option value="enterprise">NGO/CSC Partner - ₹499/month</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>
+              <input type="checkbox" required> I agree to the Terms & Conditions
+            </label>
+          </div>
+          <button type="submit" class="btn-submit">Apply Now</button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

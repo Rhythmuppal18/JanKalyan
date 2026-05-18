@@ -1,0 +1,362 @@
+<!--
+  ╔══════════════════════════════════════════════════════════════════════╗
+  ║  ELIGIBILITY PAGE / पात्रता जांच पृष्ठ                               ║
+  ║  PURPOSE: Check if user qualifies for government schemes            ║
+  ║  मकसद: यह जांचना कि कौन से schemes के लिए qualifying हैं          ║
+  ║                                                                      ║
+  ║  FEATURES:                                                           ║
+  ║  - Quick eligibility checker (तेज़ eligibility जांच)                  ║
+  ║  - Income-based filtering (आय के अनुसार schemes)                   ║
+  ║  - Category selection (category चुनना)                              ║
+  ║  - Results display (परिणाम दिखाना)                                  ║
+  ║                                                                      ║
+  ║  KEY CRITERIA:                                                       ║
+  ║  - Age (उम्र)                                                        ║
+  ║  - Income (आय)                                                      ║
+  ║  - Category (आरक्षण श्रेणी)                                          ║
+  ║  - State (राज्य)                                                    ║
+  ║                                                                      ║
+  ║  USES: validation.js for form checks                                 ║
+  ╚══════════════════════════════════════════════════════════════════════╝
+-->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Eligibility – JanKalyan</title>
+  <link rel="icon" type="image/x-icon" href="favicon.ico">
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <!-- Flag bar -->
+  <div class="tricolor-bar"></div>
+  
+  <!-- Navigation -->
+  <nav class="navbar">
+    <a href="index.html" class="nav-brand">
+      <div class="nav-emblem">🏛️</div>
+      <div class="nav-title">JANKALYAN<span>Transforming Awareness into Access.</span></div>
+    </a>
+    <!-- Mobile menu -->
+    <div class="hamburger" onclick="toggleMenu()"><span></span><span></span><span></span></div>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="about.html">About</a></li>
+      <li><a href="eligibility.html" class="active">Eligibility</a></li>
+      <li><a href="schemes-by-state.html">State Schemes</a></li>
+      <li><a href="login.html">Login</a></li>
+      <li><a href="donate.html" class="btn-nav">Donate</a></li>
+    </ul>
+  </nav>
+
+  <!-- Hero section -->
+  <section class="page-hero">
+    <div class="page-hero-content">
+      <div class="hero-badge">Eligibility Guide</div>
+      <h1>📋 Check Your Eligibility</h1>
+      <p>Review eligibility criteria for major welfare schemes across all categories to find which benefits apply to you.</p>
+    </div>
+  </section>
+
+  <!-- Main content -->
+  <div class="eligibility-content">
+    <span class="section-label">Scheme Eligibility</span>
+    <h2 class="section-title">Check Your Eligibility</h2>
+    <p class="section-sub">Answer a few quick questions to find schemes you may be eligible for.</p>
+
+    <!-- Quick Eligibility Checker Form - यह form users को schemes match करने में मदद करता है -->
+    <div style="max-width: 600px; margin: 2rem auto; background: linear-gradient(135deg, rgba(13,122,95,0.05), rgba(232,115,10,0.05)); padding: 2rem; border-radius: var(--radius-lg); border: 1px solid var(--border);">
+      <form id="eligibilityCheckerForm">
+        <h3 style="font-family:var(--font-display); color:var(--navy); margin-bottom:1.5rem;">Quick Eligibility Checker</h3>
+
+        <!-- Form field for name -->
+        <div class="form-group">
+          <label for="chk-name">Full Name <span style="color:var(--saffron);">*</span></label>
+          <input type="text" name="chk-name" id="chk-name" placeholder="Your full name" />
+        </div>
+
+        <div class="form-group">
+          <label for="chk-age">Age <span style="color:var(--saffron);">*</span></label>
+          <input type="number" name="chk-age" id="chk-age" placeholder="Your age" min="1" max="120" />
+        </div>
+
+        <div class="form-group">
+          <label for="chk-income">Annual Income (₹) <span style="color:var(--saffron);">*</span></label>
+          <input type="number" name="chk-income" id="chk-income" placeholder="0" min="0" />
+        </div>
+
+        <div class="form-group">
+          <label for="chk-category">Category <span style="color:var(--saffron);">*</span></label>
+          <select name="chk-category" id="chk-category">
+            <option value="">Select your category</option>
+            <option value="general">General</option>
+            <option value="obc">OBC</option>
+            <option value="sc">SC</option>
+            <option value="st">ST</option>
+            <option value="pwd">Person with Disability</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="chk-state">State <span style="color:var(--saffron);">*</span></label>
+          <select name="chk-state" id="chk-state">
+            <option value="">Select your state</option>
+            <option value="ap">Andhra Pradesh</option>
+            <option value="ar">Arunachal Pradesh</option>
+            <option value="as">Assam</option>
+            <option value="br">Bihar</option>
+            <option value="cg">Chhattisgarh</option>
+            <option value="ga">Goa</option>
+            <option value="gj">Gujarat</option>
+            <option value="hr">Haryana</option>
+            <option value="hp">Himachal Pradesh</option>
+            <option value="jk">Jammu & Kashmir</option>
+            <option value="jh">Jharkhand</option>
+            <option value="ka">Karnataka</option>
+            <option value="kl">Kerala</option>
+            <option value="mp">Madhya Pradesh</option>
+            <option value="mh">Maharashtra</option>
+            <option value="mn">Manipur</option>
+            <option value="ml">Meghalaya</option>
+            <option value="mz">Mizoram</option>
+            <option value="nl">Nagaland</option>
+            <option value="or">Odisha</option>
+            <option value="pb">Punjab</option>
+            <option value="rj">Rajasthan</option>
+            <option value="sk">Sikkim</option>
+            <option value="tn">Tamil Nadu</option>
+            <option value="tg">Telangana</option>
+            <option value="tr">Tripura</option>
+            <option value="up">Uttar Pradesh</option>
+            <option value="uk">Uttarakhand</option>
+            <option value="wb">West Bengal</option>
+          </select>
+        </div>
+
+        <button type="submit" class="submit-btn" style="width: 100%; margin-top: 1rem;">Check Eligibility →</button>
+      </form>
+    </div>
+
+    <!-- Eligibility Results -->
+    <div id="eligibilityResults" style="display:none; max-width: 600px; margin: 2rem auto; background: linear-gradient(135deg, rgba(13,122,95,0.08), rgba(13,122,95,0.04)); padding: 1.5rem; border-radius: var(--radius-lg); border-left: 4px solid var(--emerald);">
+      <h3 style="font-family:var(--font-display); color:var(--navy); margin-bottom:1rem;">Your Matching Schemes</h3>
+      <p id="resultsText" style="font-size:0.9rem; color:var(--mid-gray); margin-bottom:1rem;"></p>
+      <button onclick="document.getElementById('eligibilityResults').style.display='none';" style="background:var(--emerald); color:white; border:none; padding:0.6rem 1.2rem; border-radius:var(--radius-sm); cursor:pointer; font-size:0.85rem;">Close Results</button>
+    </div>
+
+    <hr style="margin: 2rem 0; border:none; border-top:1px solid var(--border);" />
+
+    <h2 class="section-title" style="margin-top: 3rem;">Eligibility Criteria Overview</h2>
+    <p class="section-sub">This table provides a quick reference for the key eligibility criteria across major government welfare schemes.</p>
+
+    <div class="elig-table-wrapper">
+      <table class="elig-table">
+        <thead>
+          <tr>
+            <th>Scheme Name</th>
+            <th>Category</th>
+            <th>Income Limit</th>
+            <th>Class/Age</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>PM Scholarship Scheme</strong></td>
+            <td>Student</td>
+            <td>No specific income limit mentioned in official guidelines for this category.</td>
+            <td>	Pursuing First Professional Degree (BE, MBBS, etc.)</td>
+            <td><span class="elig-badge open">Open</span></td>
+          </tr>
+          <tr>
+            <td><strong>NMMS Scholarship</strong></td>
+            <td>Student</td>
+            <td>Below ₹3.5L/year</td>
+            <td>Class 9–12</td>
+            <td><span class="elig-badge open">Open</span></td>
+          </tr>
+          <tr>
+            <td><strong>Ayushman Bharat (PMJAY)</strong></td>
+            <td>Health</td>
+            <td>Generally monthly income below ₹10,000 for rural</td>
+            <td>All Ages (All 70+ now covered regardless of income)</td>
+            <td><span class="elig-badge open">Open</span></td>
+          </tr>
+          <tr>
+            <td><strong>Janani Suraksha Yojana</strong></td>
+            <td>Health</td>
+            <td>	BPL (or SC/ST)</td>
+            <td>Pregnant Women</td>
+            <td><span class="elig-badge open">Open</span></td>
+          </tr>
+          <tr>
+            <td><strong>PMAY-Gramin</strong></td>
+            <td>Housing</td>
+            <td>	Up to ₹15,000/month</td>
+            <td>18+</td>
+            <td><span class="elig-badge open">Open</span></td>
+          </tr>
+          <tr>
+            <td><strong>PMAY-Urban 2.0</strong></td>
+            <td>Housing</td>
+            <td>	EWS < ₹3L | LIG ₹3–6L | MIG ₹6–9L</td>
+            <td>Adult (18+)</td>
+            <td><span class="elig-badge open">Open (CLSS replaced by ISS)</span></td>
+          </tr>
+          <tr>
+            <td><strong>MGNREGS</strong></td>
+            <td>Services</td>
+            <td>Rural Households</td>
+            <td>18+</td>
+            <td><span class="elig-badge open">Open</span></td>
+          </tr>
+          <tr>
+            <td><strong>PM Ujjwala Yojana</strong></td>
+            <td>Services</td>
+            <td>BPL</td>
+            <td>Adult Women</td>
+            <td><span class="elig-badge open">Open</span></td>
+          </tr>
+          <tr>
+            <td><strong>Atal Pension Yojana</strong></td>
+            <td>Services</td>
+            <td>All Rural Households</td>
+            <td>18–40</td>
+            <td><span class="elig-badge age">Active</span></td>
+          </tr>
+          <tr>
+            <td><strong>PM Kisan Samman Nidhi</strong></td>
+            <td>Services</td>
+            <td>All Landholding Farmers</td>
+            <td>18+</td>
+            <td><span class="elig-badge open">Open</span></td>
+          </tr>
+          <tr>
+            <td><strong>Pragati Scholarship</strong></td>
+            <td>Student</td>
+            <td>Below ₹8L/year</td>
+            <td>Girl Students (Degree/Dip)</td>
+            <td><span class="elig-badge open">Open</span></td>
+          </tr>
+          <tr>
+            <td><strong>Jal Jeevan Mission</strong></td>
+            <td>Services</td>
+            <td>All Rural Households</td>
+            <td>All Ages</td>
+            <td><span class="elig-badge age">Ongoing</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div style="margin-top:2rem;padding:1.25rem 1.5rem;background:rgba(255,153,51,0.08);border-radius:10px;border-left:4px solid var(--saffron);">
+      <p style="font-size:0.88rem;color:var(--navy);">
+        <strong>Note:</strong> Eligibility criteria may vary by state and are subject to periodic revision. Always verify eligibility directly with the concerned ministry or CSC (Common Service Centre) before applying.
+      </p>
+    </div>
+  </div>
+
+  <footer class="footer">
+    <div class="footer-inner">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <div class="nav-brand"><div class="nav-emblem">🏛️</div><div class="nav-title" style="color:white;">JANKALYAN<span>Transforming Awareness into Access.</span></div></div>
+          <p>Empowering every citizen through access to information and government welfare schemes.</p>
+        </div>
+        <div class="footer-col"><h4>Schemes</h4><a href="student.html">Student</a><a href="health.html">Health</a><a href="housing.html">Housing</a><a href="service.html">Services</a></div>
+        <div class="footer-col"><h4>Portal</h4><a href="about.html">About</a><a href="eligibility.html">Eligibility</a><a href="donate.html">Donate</a></div>
+        <div class="footer-col"><h4>Help</h4><a href="#">FAQ</a><a href="#">Contact</a><a href="#">Grievance</a></div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2025 JanKalyan India. All rights reserved.</p>
+        <div class="footer-flag">
+          <div class="flag-stripe" style="background:var(--saffron);border-radius:2px 0 0 2px;"></div>
+          <div class="flag-stripe" style="background:var(--white);"></div>
+          <div class="flag-stripe" style="background:var(--green);border-radius:0 2px 2px 0;"></div>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="validation.js"></script>
+  <script>
+    // Eligibility Checker Logic
+    document.addEventListener('DOMContentLoaded', function() {
+      const eligibilityForm = document.getElementById('eligibilityCheckerForm');
+      if (eligibilityForm) {
+        const validator = new FormValidator('eligibilityCheckerForm');
+        validator
+          .addRule('chk-name', (v) => Validators.name(v), 'Please enter a valid name')
+          .addRule('chk-age', (v) => Validators.age(v), 'Age must be between 18 and 120')
+          .addRule('chk-income', (v) => Validators.income(v), 'Please enter a valid income')
+          .addRule('chk-category', (v) => Validators.required(v), 'Please select a category')
+          .addRule('chk-state', (v) => Validators.required(v), 'Please select a state');
+        
+        setupRealtimeValidation(validator);
+
+        eligibilityForm.addEventListener('submit', function(e) {
+          e.preventDefault();
+
+          if (!validator.validate()) {
+            return false;
+          }
+
+          const name = document.getElementById('chk-name').value;
+          const age = parseInt(document.getElementById('chk-age').value);
+          const income = parseInt(document.getElementById('chk-income').value);
+          const category = document.getElementById('chk-category').value;
+
+          // Simple eligibility checking logic
+          let matchingSchemes = [];
+
+          // Based on age and income, determine eligible schemes
+          if (age >= 18 && age <= 12) {
+            matchingSchemes.push('NMMS Scholarship - Class 9-12');
+          }
+          if (age >= 18 && income < 450000) {
+            matchingSchemes.push('Ayushman Bharat (PMJAY) - ₹5 lakh health cover');
+            matchingSchemes.push('PMAY Gramin - Housing scheme');
+          }
+          if (age >= 18 && age <= 40 && income < 300000) {
+            matchingSchemes.push('Atal Pension Yojana - ₹1000-5000/month pension');
+          }
+          if (category === 'sc' || category === 'st') {
+            matchingSchemes.push('Post-Matric Scholarship for SC/ST - Up to ₹1,200/month');
+          }
+          if (category === 'obc') {
+            matchingSchemes.push('PM YASASVI Scheme - Up to ₹1,25,000/year');
+          }
+          if (income < 300000) {
+            matchingSchemes.push('PM Ujjwala Yojana - Free LPG connection');
+            matchingSchemes.push('MGNREGS - 100 days guaranteed employment');
+          }
+
+          // Display results
+          const resultsDiv = document.getElementById('eligibilityResults');
+          const resultsText = document.getElementById('resultsText');
+
+          if (matchingSchemes.length > 0) {
+            let resultHTML = `<strong>Hi ${name}, you may be eligible for:</strong><ul style="margin: 1rem 0 1rem 1.5rem;">`;
+            matchingSchemes.forEach(scheme => {
+              resultHTML += `<li style="margin-bottom:0.5rem; font-size:0.9rem;">${scheme}</li>`;
+            });
+            resultHTML += '</ul><p style="font-size:0.8rem; color:var(--mid-gray); margin-top:1rem;">Verify eligibility details with respective state or central ministry for final confirmation.</p>';
+            resultsText.innerHTML = resultHTML;
+          } else {
+            resultsText.innerHTML = '<p>Based on your information, you may not qualify for the main schemes listed above. Please consult with a CSC (Common Service Centre) for more detailed eligibility information.</p>';
+          }
+
+          resultsDiv.style.display = 'block';
+          resultsDiv.scrollIntoView({ behavior: 'smooth' });
+
+          showSuccessMessage('Eligibility check completed! See results below.', 3000);
+        });
+      }
+    });
+
+    function toggleMenu(){document.getElementById('navLinks').classList.toggle('open');}
+  </script>
+</body>
+</html>
