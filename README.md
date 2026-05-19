@@ -2,7 +2,7 @@
 Frontend sme2 project using html css javascript
 
 
-*Deployed Link :-* https://jankalyanwelfare.netlify.app/
+*Deployed Link :- https://jan-kalyan.vercel.app/
 
 ⚖️ Disclaimer
 JanKalyan is an informational concept portal developed for educational  demonstration contexts. It is not owned, operated, or endorsed by any municipal, state, or central government body of India.
