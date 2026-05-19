@@ -19,35 +19,8 @@ The problem it solves is real: most eligible citizens never access their entitle
 
 
 
+<img width="606" height="566" alt="image" src="https://github.com/user-attachments/assets/7673d7a9-3d50-44de-bd4e-2274ff186f3a" />
 
-## 📁 Project Structure 
-
-jankalyan/
-│
-├── 📄 index.html              ← Landing page with scheme highlights & hero section
-├── 📄 about.html              ← Mission, vision, and core functions
-├── 📄 eligibility.html        ← Quick eligibility checker form + criteria table
-├── 📄 schemes-by-state.html   ← State-wise scheme browser
-├── 📄 login.html              ← User login page
-├── 📄 donate.html             ← Donation form with 80G details
-│
-├── 📄 student.html            ← 12 student/scholarship schemes
-├── 📄 student.js              ← Student scheme data + modal logic
-│
-├── 📄 health.html             ← 8 health & medical schemes
-├── 📄 health.js               ← Health scheme data + modal logic
-│
-├── 📄 housing.html            ← 8 housing & shelter schemes
-├── 📄 housing.js              ← Housing scheme data + modal logic
-│
-├── 📄 service.html            ← 8 essential service schemes
-├── 📄 service.js              ← Service scheme data + modal logic
-│
-├── 🎨 style.css               ← Global styles, CSS variables, responsive design
-├── ⚙️  script.js               ← Core JS utilities
-├── ✅ validation.js            ← Form validation engine (reusable)
-└── 🖼️  favicon.ico             ← Site favicon
----
 
 
 
@@ -138,24 +111,6 @@ jankalyan/
 - LPG connection (PMUY)
 
 ---
-
-
-🚀 Getting Started
-
-
-Option 1 — Just open it locally:
-git clone https://github.com/yourusername/jankalyan.git
-cd jankalyan
-
-
-# Open index.html in any browser
-
-Option 2 — Deploy to GitHub Pages:
- Push to main branch
-git push origin main
-
-# Go to: Settings → Pages → Source: Deploy from branch (main / root)
-# Your site will be live at: https://yourusername.github.io/jankalyan
 
 
 ## 👥 USER TYPES / उपयोगकर्ता के प्रकार
