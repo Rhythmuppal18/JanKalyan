@@ -8,52 +8,64 @@ Frontend sme2 project using html css javascript
 JanKalyan is an informational concept portal developed for educational  demonstration contexts. It is not owned, operated, or endorsed by any municipal, state, or central government body of India.
 
 
-## 🎯 PROJECT OVERVIEW / प्रोजेक्ट का अवलोकन
+## 🎯 PROJECT OVERVIEW 
 
-### What is JANKALYAN?
-**JANKALYAN** is a complete web application that helps Indian citizens discover and access government welfare schemes. It's a platform that brings together information about 480+ government programs across different categories.
+🏛️ Transforming Awareness into Access
+A centralised digital platform bridging citizens and government welfare schemes across India.
+
+📌 What is JanKalyan?
+JanKalyan (  People's Welfare) is a frontend web portal that aggregates  central government welfare schemes across four major categories — Health, Housing, Education, and Essential Services — into one clean, accessible interface.
+The problem it solves is real: most eligible citizens never access their entitled benefits because information is scattered across dozens of ministry websites in bureaucratic language. JanKalyan puts it all in one place, in plain terms.
+
 
 
 
 ## 📁 Project Structure 
 
 jankalyan/
-├── 📄 index.html             # Home page with search, live feed, and categories
-├── 📄 student.html           # Student schemes database layout
-├── 📄 health.html            # Health schemes database layout
-├── 📄 housing.html           # Housing schemes database layout
-├── 📄 service.html           # Service schemes database layout
-├── 📄 about.html             # About the portal and its mission
-├── 📄 eligibility.html       # Smart eligibility checker and screening logic
-├── 📄 login.html             # User authentication gateway
-├── 📄 donate.html            # Contribution page with verification hooks
-├── 📄 schemes-by-state.html  # State-wise scheme matrix listings
 │
-├── 📁 css/
-│   └── 🎨 style.css          # Main styling framework, color variables, and media rules
+├── 📄 index.html              ← Landing page with scheme highlights & hero section
+├── 📄 about.html              ← Mission, vision, and core functions
+├── 📄 eligibility.html        ← Quick eligibility checker form + criteria table
+├── 📄 schemes-by-state.html   ← State-wise scheme browser
+├── 📄 login.html              ← User login page
+├── 📄 donate.html             ← Donation form with 80G details
 │
-└── 📁 js/
-    ├── ⚙️ script.js          # App controller, scroll animations, and search functions
-    ├── ⚙️ validation.js      # Form validation logic (Email, Phone, Aadhaar, PAN)
-    ├── ⚙️ student.js         # Student scheme database arrays
-    ├── ⚙️ health.js          # Health scheme database arrays
-    ├── ⚙️ housing.js         # Housing scheme database arrays
-    └── ⚙️ service.js         # Service scheme database arrays
-
+├── 📄 student.html            ← 12 student/scholarship schemes
+├── 📄 student.js              ← Student scheme data + modal logic
+│
+├── 📄 health.html             ← 8 health & medical schemes
+├── 📄 health.js               ← Health scheme data + modal logic
+│
+├── 📄 housing.html            ← 8 housing & shelter schemes
+├── 📄 housing.js              ← Housing scheme data + modal logic
+│
+├── 📄 service.html            ← 8 essential service schemes
+├── 📄 service.js              ← Service scheme data + modal logic
+│
+├── 🎨 style.css               ← Global styles, CSS variables, responsive design
+├── ⚙️  script.js               ← Core JS utilities
+├── ✅ validation.js            ← Form validation engine (reusable)
+└── 🖼️  favicon.ico             ← Site favicon
 ---
+
+
+
+
+
 
 ## 🏗️ TECHNOLOGY STACK / तकनीकें
 
 ### Frontend (User Interface)
-- **HTML5** - Page structure (पृष्ठ संरचना)
-- **CSS3** - Styling and design (स्टाइलिंग)
-- **Vanilla JavaScript** - No frameworks needed (कोई framework नहीं)
-- **LocalStorage** - User data storage (यूजर डेटा स्टोरेज)
+- **HTML5** - Page structure 
+- **CSS3** - Styling and design 
+- **Vanilla JavaScript** - No frameworks needed 
+- **LocalStorage** - User data storage (
 
 ### Design
-- Responsive design (सभी devices पर काम करता है)
-- Mobile-friendly (मोबाइल के लिए optimized)
-- Modern UI/UX principles (आधुनिक डिजाइन)
+- Responsive design 
+- Mobile-friendly
+- Modern UI/UX principles 
 
 ---
 
@@ -126,6 +138,25 @@ jankalyan/
 - LPG connection (PMUY)
 
 ---
+
+
+🚀 Getting Started
+
+
+Option 1 — Just open it locally:
+git clone https://github.com/yourusername/jankalyan.git
+cd jankalyan
+
+
+# Open index.html in any browser
+
+Option 2 — Deploy to GitHub Pages:
+ Push to main branch
+git push origin main
+
+# Go to: Settings → Pages → Source: Deploy from branch (main / root)
+# Your site will be live at: https://yourusername.github.io/jankalyan
+
 
 ## 👥 USER TYPES / उपयोगकर्ता के प्रकार
 
